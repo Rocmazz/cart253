@@ -14,7 +14,7 @@
 */
 function setup() {
     // A 640x480 canvas
-    createCanvas(640, 640);
+    createCanvas(1080, 720);
 
     // Don't show the cursor
     noCursor();
@@ -26,11 +26,11 @@ function setup() {
 */
 function draw() {
     // Make the background black (specified as RGB)
-    background(0, 0, 0);
+    background(0, 0, 556);
 
     // Draw a pyramid
     // How many levels for the pyramid
-    const levels = 10;
+    const levels = 15;
     // Loop through every level (backwards)
     for (let level = levels; level > 0; level--) {
         // Draw this layer
@@ -42,14 +42,14 @@ function draw() {
         // No line around the levels
         noStroke();
         // Set the fill colour to our shade (RGB)
-        fill(shade, shade, 0);
+        fill(shade, shade, 300);
         // Draw rectangles from the centre
         rectMode(CENTER);
         // Draw the rectangle in the centre of the canvas
         // (320, 320) with a size based on the level
         // e.g. level 1 will be a 48x48 rectangle and
         // level 10 will be a 480x480 rectangle
-        rect(320, 320, level * 48, level * 48);
+        rect(540, 360, level * 73, level * 18);
         pop();
     }
 
