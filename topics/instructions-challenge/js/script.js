@@ -34,6 +34,9 @@ function draw() {
 
 //Clouds
 drawClouds();
+
+//Mountain Far Back
+drawMountain();
 }
 
 function drawGrassyHill() {
@@ -109,4 +112,10 @@ function drawClouds() {
   ellipse(80, 140, 105, 70);
   ellipse(100, 150, 118, 40);
   pop();
+}
+
+function drawMountain() {
+//Base Mountain
+
+
 }
