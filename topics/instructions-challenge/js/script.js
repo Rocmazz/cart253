@@ -116,6 +116,8 @@ function drawClouds() {
 
 function drawMountain() {
 //Base Mountain
-
-
+push();
+noStroke();
+fill("#3172DCFF");
+triangle(340, 300, 420, 300, 380, 230)
 }
