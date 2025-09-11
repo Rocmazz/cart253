@@ -23,20 +23,20 @@ function draw() {
   //The Sky
   background("#4a8aef");
 
+  //Mountain Far Back
+  drawMountain();
+
   //Grassy Hill
   drawGrassyHill();
 
   //Grassy Hill Foreground
   drawGrassyHillForeground();
 
- //Shading the sky
+  //Shading the sky
   drawSkyShading();
 
-//Clouds
-drawClouds();
-
-//Mountain Far Back
-drawMountain();
+  //Clouds
+  drawClouds();
 }
 
 function drawGrassyHill() {
