@@ -82,6 +82,13 @@ function drawSkyShading() {
   // First layer of shading
   push();
   noStroke();
+  fill("#508EF2FF");
+  ellipse(385, 35, 850, 250);
+  pop();
+
+  // First layer of shading
+  push();
+  noStroke();
   fill("#5794F6FF");
   ellipse(400, 0, 850, 250);
   pop();
@@ -115,7 +122,14 @@ function drawClouds() {
 }
 
 function drawMountain() {
-//Base Mountain
+//First Mountain
+push();
+noStroke();
+fill("#296AD2FF");
+triangle(280, 300, 420, 300, 360, 230)
+
+
+//Second Mountain
 push();
 noStroke();
 fill("#3172DCFF");
