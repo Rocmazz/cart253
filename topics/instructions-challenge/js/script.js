@@ -20,19 +20,71 @@ function setup() {
  * Sets the background, draws the landscape
 */
 function draw() {
-   //The Sky
-    background("#4a8aef")
+  //The Sky
+  background("#4a8aef");
 
-    //Grassy Hill
-    drawGrassyHill()
+  //Grassy Hill
+  drawGrassyHill();
+
+  //Grassy Hill Foreground
+  drawGrassyHillForeground();
+
+ //Shading the sky
+  drawSkyShading();
 }
 
 function drawGrassyHill() {
+  //Flat Grassy Surface
+  push();
+  noStroke();
+  fill("#86ae30");
+  rect(0, 300, 400, 150);
+  pop();
 
-//Flat Grassy Surface
-push()
-noStroke()
-fill("#86ae30");
-rect(0, 250, 400, 150)
+  // Left Hill Top
+  push();
+  noStroke();
+  fill("#86ae30");
+  ellipse(150, 350, 550, 250);
+  pop()
 
+  // Right Hill Top
+  push();
+  noStroke();
+  fill("#86ae30");
+  ellipse(475, 390, 550, 250);
+  pop()
 }
+
+function drawGrassyHillForeground() {
+  // Right Foreground hill
+  push();
+  noStroke();
+  fill("#709628");
+  ellipse(350, 450, 850, 250);
+  pop();
+
+  // Left Foreground hill
+  push();
+  noStroke();
+  fill("#618125FF");
+  ellipse(0, 470, 850, 250);
+  pop();
+}
+
+function drawSkyShading() {
+  // First layer of shading
+  push();
+  noStroke();
+  fill("#5794F6FF");
+  ellipse(400, 0, 850, 250);
+  pop();
+
+  // Second Layer Of Shading
+  push();
+  noStroke();
+  fill("#6DA5FFFF");
+  ellipse(415, -35, 850, 250);
+  pop();
+}
+
