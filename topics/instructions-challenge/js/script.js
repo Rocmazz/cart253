@@ -100,4 +100,13 @@ function drawClouds() {
   ellipse(220, 90, 100, 60);
   ellipse(240, 100, 110, 40);
   pop();
+
+  // Second Cloud
+  push();
+  noStroke();
+  fill("#FFFFFFFF");
+  ellipse(60, 150, 100, 50);
+  ellipse(80, 140, 105, 70);
+  ellipse(100, 150, 118, 40);
+  pop();
 }
