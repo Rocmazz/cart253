@@ -31,6 +31,9 @@ function draw() {
 
  //Shading the sky
   drawSkyShading();
+
+//Clouds
+drawClouds();
 }
 
 function drawGrassyHill() {
@@ -88,3 +91,13 @@ function drawSkyShading() {
   pop();
 }
 
+function drawClouds() {
+  // First Cloud
+  push();
+  noStroke();
+  fill("#FFFFFFFF");
+  ellipse(200, 100, 90, 40);
+  ellipse(220, 90, 100, 60);
+  ellipse(240, 100, 110, 40);
+  pop();
+}
