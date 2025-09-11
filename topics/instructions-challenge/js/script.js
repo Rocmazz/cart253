@@ -122,16 +122,21 @@ function drawClouds() {
 }
 
 function drawMountain() {
-//First Mountain
-push();
-noStroke();
-fill("#296AD2FF");
-triangle(280, 300, 420, 300, 360, 230)
+  //First Mountain
+  push();
+  noStroke();
+  fill("#1C5CC2FF");
+  triangle(360, 300, 440, 300, 395, 220);
 
+  //Second Mountain
+  push();
+  noStroke();
+  fill("#296AD2FF");
+  triangle(280, 300, 420, 300, 360, 230);
 
-//Second Mountain
-push();
-noStroke();
-fill("#3172DCFF");
-triangle(340, 300, 420, 300, 380, 230)
+  //Third Mountain
+  push();
+  noStroke();
+  fill("#3172DCFF");
+  triangle(340, 300, 420, 300, 380, 230);
 }
