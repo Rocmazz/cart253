@@ -37,7 +37,9 @@ function draw() {
 
   //Make Mr. Furios turn red
   mrFurious.fill.g = mrFurious.fill.g - .4;
+  mrFurious.fill.g =constrain(mrFurious.fill.g,0,255);
   mrFurious.fill.b = mrFurious.fill.b - .4;
+  mrFurious.fill.b = constrain(mrFurious.fill.b, 0, 255);
 }
 
 // Draw Mr. Furious as a coloured circle
