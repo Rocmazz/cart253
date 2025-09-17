@@ -33,11 +33,18 @@ function setup() {
  */
 function draw() {
   background(160, 180, 200);
+  drawMrFurious();
 
-  // Draw Mr. Furious as a coloured circle
-  push();
-  noStroke();
-  fill(mrFurious.fill.r, mrFurious.fill.g, mrFurious.fill.b);
-  ellipse(mrFurious.x, mrFurious.y, mrFurious.size);
-  pop();
+  //Make Mr. Furios turn red
+  mrFurious.fill.g = mrFurious.fill.g - .4;
+  mrFurious.fill.b = mrFurious.fill.b - .4;
+}
+
+// Draw Mr. Furious as a coloured circle
+function drawMrFurious(){  
+    push();
+      noStroke();
+     fill(mrFurious.fill.r, mrFurious.fill.g, mrFurious.fill.b);
+    ellipse(mrFurious.x, mrFurious.y, mrFurious.size);
+     pop();
 }
