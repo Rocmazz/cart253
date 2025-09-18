@@ -35,8 +35,8 @@ let sky = {
 let bird = {
   // Position and size
   x: -25,
-  y: 100,
-  size: 50,
+  y: 120,
+  size: 25,
   // Colour
   fill: {
     r: 255,
@@ -74,6 +74,11 @@ function draw() {
   sky.fill.g = constrain(sky.fill.g, 0, 255);
   sky.fill.b = sky.fill.b - 1;
   sky.fill.b = constrain(sky.fill.b, 0, 255);
+
+  //Bird flies from left to right
+  bird.x = bird.x+1.5
+  bird.x = constrain(bird.x, -25, 425)
+  bird.y = 30 * sin(bird.x * 0.1) + 100;
 
 }
 
