@@ -67,6 +67,10 @@ function draw() {
   mrFurious.fill.b = mrFurious.fill.b - .5;
   mrFurious.fill.b = constrain(mrFurious.fill.b, 0, 255);
 
+  //Make Mr. Furious Shake
+  mrFurious.x = random(197,203)
+  mrFurious.y = random(197, 203);
+
   //Turn the sky black
   sky.fill.r = sky.fill.r - 1;
   sky.fill.r = constrain(sky.fill.r,0,255);
