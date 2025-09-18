@@ -19,6 +19,13 @@ let mrFurious = {
     g: 225,
     b: 225,
   },
+  rage: {
+    speed: 0.5,
+    startX: 200,
+    endX: 200,
+    startY: 200,
+    endY: 200,
+  },
 };
 
 //The Sky (or simply the background)
@@ -62,14 +69,17 @@ function draw() {
   drawBird()
 
   //Make Mr. Furios turn red
-  mrFurious.fill.g = mrFurious.fill.g - .5;
+  mrFurious.fill.g = mrFurious.fill.g - mrFurious.rage.speed;
   mrFurious.fill.g =constrain(mrFurious.fill.g,0,255);
-  mrFurious.fill.b = mrFurious.fill.b - .5;
+  mrFurious.fill.b = mrFurious.fill.b - mrFurious.rage.speed;
   mrFurious.fill.b = constrain(mrFurious.fill.b, 0, 255);
 
   //Make Mr. Furious Shake
-  mrFurious.x = random(197,203)
-  mrFurious.y = random(197, 203);
+  mrFurious.x = mrFurious.rage.startX;
+  mrFurious.y = mrFurious.rage.startY;
+  mrFurious.rage.startX = random(197, 203)
+  mrFurious.rage.startY = random(197,203)
+
 
   //Turn the sky black
   sky.fill.r = sky.fill.r - 1;
