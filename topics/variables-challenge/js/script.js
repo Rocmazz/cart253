@@ -78,6 +78,7 @@ function draw() {
   //Bird flies from left to right
   bird.x = bird.x+1.5
   bird.x = constrain(bird.x, -25, 425)
+  //bird bounces up and down
   bird.y = 30 * sin(bird.x * 0.1) + 100;
 
 }
