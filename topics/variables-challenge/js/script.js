@@ -25,6 +25,7 @@ let mrFurious = {
     endX: 200,
     startY: 200,
     endY: 200,
+    velocity:0.1,
   },
 };
 
@@ -67,19 +68,29 @@ function draw() {
   background(sky.fill.r, sky.fill.g, sky.fill.b);
   drawMrFurious();
   drawBird()
+  //logging the velocity to make sure it accelerates slowly and reaches a max
+  console.log(mrFurious.rage.velocity)
 
   //Make Mr. Furios turn red
-  mrFurious.fill.g = mrFurious.fill.g - mrFurious.rage.speed;
+  mrFurious.fill.g = mrFurious.fill.g - mrFurious.rage.velocity;
   mrFurious.fill.g =constrain(mrFurious.fill.g,0,255);
-  mrFurious.fill.b = mrFurious.fill.b - mrFurious.rage.speed;
+  mrFurious.fill.b = mrFurious.fill.b - mrFurious.rage.velocity;
   mrFurious.fill.b = constrain(mrFurious.fill.b, 0, 255);
 
-  //Make Mr. Furious Shake
-  mrFurious.x = mrFurious.rage.startX;
-  mrFurious.y = mrFurious.rage.startY;
-  mrFurious.rage.startX = random(197, 203)
-  mrFurious.rage.startY = random(197,203)
-
+  ///Make Mr. Furious Shake
+  mrFurious.rage.startX = random(197, 203);
+  mrFurious.rage.startY = random(197, 203);
+  //Full shake at the end
+  mrFurious.rage.endX = random(180, 220);
+  mrFurious.rage.endY = random(180, 220);
+  //Shake acceleration variable
+  mrFurious.rage.velocity = mrFurious.rage.velocity + 0.001;
+  mrFurious.rage.velocity = constrain(mrFurious.rage.velocity, 0, 2)
+  //Shaking from starting velocity to ending velocity
+  mrFurious.x = lerp(mrFurious.rage.startX, mrFurious.rage.endX, mrFurious.rage.velocity)
+  mrFurious.x = constrain(mrFurious.x, 180, 220)
+  mrFurious.y = lerp(mrFurious.rage.startY, mrFurious.rage.endY, mrFurious.rage.velocity)
+  mrFurious.y = constrain(mrFurious.y, 180, 220);
 
   //Turn the sky black
   sky.fill.r = sky.fill.r - 1;
