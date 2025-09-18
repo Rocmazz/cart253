@@ -79,7 +79,7 @@ function draw() {
   sky.fill.b = sky.fill.b - 1;
   sky.fill.b = constrain(sky.fill.b, 0, 255);
 
-  //Bird flies from left to right (looped)
+  //Bird flies back and forth (looped)
   bird.x = 300 * sin(frameCount * 0.05) + 200;
   bird.x = constrain(bird.x, -25, 425)
   //bird bounces up and down
