@@ -42,17 +42,7 @@ function setup() {
 function draw() {
   background("#aaaaaa");
 
-  // Calculate distance between user and puck
-  const d = dist(user.x, user.y, puck.x, puck.y);
 
-  const overlap = d < user.size / 2 + puck.size / 2;
-
-  // test to see if overlap code works
-    if (overlap) {
-      puck.fill = puck.fills.overlap;
-    } else {
-      puck.fill = puck.fills.noOverlap;
-    }
 
   // Move user circle
   moveUser();
@@ -96,5 +86,15 @@ function drawPuck() {
 }
 
 function movePuck() {
-    
+  // Calculate distance between user and puck and overlap
+  const d = dist(user.x, user.y, puck.x, puck.y);
+
+  const overlap = d < user.size / 2 + puck.size / 2;
+
+  // test to see if overlap code works
+  if (overlap) {
+    puck.fill = puck.fills.overlap;
+  } else {
+    puck.fill = puck.fills.noOverlap;
+  }
 }
