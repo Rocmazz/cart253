@@ -11,6 +11,11 @@ const puck = {
   y: 200,
   size: 100,
   fill: "#ff0000",
+ //just to check if overlap code works
+  fills: {
+    noOverlap: "#ff0000", // red for no overlap
+    overlap: "#00ff00", // green for overlap
+  },
 };
 
 const user = {
@@ -19,6 +24,10 @@ const user = {
   size: 75,
   fill: "#000000",
 };
+
+
+
+
 
 /**
  * Create the canvas
@@ -33,12 +42,27 @@ function setup() {
 function draw() {
   background("#aaaaaa");
 
+  // Calculate distance between user and puck
+  const d = dist(user.x, user.y, puck.x, puck.y);
+
+  const overlap = d < user.size / 2 + puck.size / 2;
+
+  // test to see if overlap code works
+    if (overlap) {
+      puck.fill = puck.fills.overlap;
+    } else {
+      puck.fill = puck.fills.noOverlap;
+    }
+
   // Move user circle
   moveUser();
 
   // Draw the user and puck
   drawUser();
   drawPuck();
+
+  // Pushes the Puck Through the user
+  movePuck();
 }
 
 /**
@@ -69,4 +93,8 @@ function drawPuck() {
   fill(puck.fill);
   ellipse(puck.x, puck.y, puck.size);
   pop();
+}
+
+function movePuck() {
+    
 }
