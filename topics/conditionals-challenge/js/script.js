@@ -11,10 +11,13 @@ const puck = {
   y: 200,
   size: 100,
   fill: "#ff0000",
- //just to check if overlap code works
+  //just to check if overlap code works
   fills: {
     noOverlap: "#ff0000", // red for no overlap
-    overlap: "#00ff00", // green for overlap
+    overlapR: "#00ff00", // green for overlap right
+    overlapL: "#2F00FFFF", // green for overlap left
+    overlapU: "#FF00B7FF", // green for overlap up
+    overlapD: "#EEFF00FF", // green for overlap down
   },
 };
 
@@ -91,10 +94,23 @@ function movePuck() {
 
   const overlap = d < user.size / 2 + puck.size / 2;
 
+  const overlapRight = user.x > puck.x 
+  const overlapLeft = user.x < puck.x; 
+  const overlapUp = user.y > puck.y;
+  const overlapDown = user.y < puck.y; 
+
   // test to see if overlap code works
-  if (overlap) {
-    puck.fill = puck.fills.overlap;
-  } else {
-    puck.fill = puck.fills.noOverlap;
-  }
+  if (overlap && overlapRight) {
+    puck.x -= 1;
+  } 
+   if (overlap && overlapLeft) {
+    puck.x += 1;
+  } 
+   if (overlap && overlapUp) {
+    puck.y -= 1;
+  } 
+  if (overlap && overlapDown) {
+    puck.y += 1;
+  } 
+  
 }
