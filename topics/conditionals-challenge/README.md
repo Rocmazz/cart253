@@ -13,7 +13,7 @@ The User moves a puck to a target to make it change color
 ## Screenshot(s)
 
 
-> ![Screenshot of project](./assets/images/clown.png)
+> ![Screenshot of project](./assets/images/screenshot.png)
 
 ## Attribution
 
