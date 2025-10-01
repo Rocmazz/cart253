@@ -21,6 +21,15 @@ let nourHead = {
     h:325,
 }
 
+let nourBody = {
+  //Position and size
+  x: 300,
+  y: 600,
+  w: 500,
+  h: 320,
+  //shirt color
+  color: "#1071bc",
+};
 
 /**
  * Create the canvas
@@ -35,6 +44,7 @@ function setup() {
 */
 function draw() {
     background("#000000FF");
+    drawNourBody();
     drawNourHead();
 }
 
@@ -47,4 +57,12 @@ function drawNourHead(){
     fill(skin);
     ellipse(nourHead.x, nourHead.y, nourHead.w, nourHead.h)
     pop();
+}
+
+function drawNourBody() {
+  push();
+  noStroke();
+  fill(nourBody.color);
+  ellipse(nourBody.x, nourBody.y, nourBody.w, nourBody.h);
+  pop();
 }
