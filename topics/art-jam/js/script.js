@@ -30,18 +30,36 @@ let nourBody = {
 };
 
 let nourEyes = {
-  //Left Eye
+  //Left Eye Size & Proportions
   L: {
     x: 240,
     y: 280,
     w: 75,
     h: 50,
   },
+  //Right Eye Size & Proportions
   R: {
     x: 360,
     y: 280,
     w: 75,
     h: 50,
+  },
+};
+
+let nourIris = {
+  //Left Iris Size & Proportions
+  L: {
+    x: 240,
+    y: 280,
+    w: 35,
+    h: 35,
+  },
+  //Right Iris Size & Proportions
+  R: {
+    x: 360,
+    y: 280,
+    w: 35,
+    h: 35,
   },
 };
 
@@ -60,6 +78,7 @@ function draw() {
   drawNourBody();
   drawNourHead();
   drawNourEyes();
+  drawNourIris();
 }
 
 // Draw Head
@@ -88,3 +107,14 @@ function drawNourEyes() {
   ellipse(nourEyes.R.x, nourEyes.R.y, nourEyes.R.w, nourEyes.R.h);
   pop();
 }
+
+//Draw Iris
+function drawNourIris() {
+  push();
+  noStroke();
+  fill("#000000EE");
+  ellipse(nourIris.L.x, nourIris.L.y, nourIris.L.w, nourIris.L.h);
+  ellipse(nourIris.R.x, nourIris.R.y, nourIris.R.w, nourIris.R.h);
+  pop();
+}
+
