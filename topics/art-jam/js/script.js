@@ -7,6 +7,14 @@
 
 "use strict";
 
+//defines the user
+const user = {
+  x: undefined, // will be mouseX
+  y: undefined, // will be mouseY
+  size: 30,
+
+};
+
 // Skin Tone
 let skin = "#BD8B5AFF";
 
@@ -75,6 +83,9 @@ let nourIris = {
   },
 };
 
+let bgColor = 0
+    
+
 /**
  * Create the canvas
  */
@@ -87,15 +98,35 @@ function setup() {
  * Draw My Self Portrait
  */
 function draw() {
-  background("#595959FF");
+    
+  // set the background
+  background(bgColor, 5, 80);
+    bgColor += 0.4
+    if (bgColor >= 255) {
+      bgColor = 0;
+    };
+    
+
+  // Move  user circle
+  moveUser();
+
+  // draw Me
   drawNourBody();
-    drawNourHairBack();
+  drawNourHairBack();
   drawNourHead();
   drawNourEyes();
   drawNourIris();
   drawNourMouth();
   drawNourHairline();
-  drawNourBraids();
+  drawNourBraid();
+
+// draw user circle
+  drawUser();
+
+  moveBraid();
+
+mouseDragged();
+
 }
 
 // Draw Head
@@ -129,8 +160,8 @@ function drawNourEyes() {
 function drawNourIris() {
    const irisFollow = 4; // how far the pupils can move
    // map mouse to small offset
-   const irisX = map(mouseX, 0, width, -irisFollow, irisFollow);
-   const irisY = map(mouseY, 0, height, -irisFollow, irisFollow);
+   const irisX = map(user.x, 0, width, -irisFollow, irisFollow);
+   const irisY = map(user.y, 0, height, -irisFollow, irisFollow);
     push();
   
   noStroke();
@@ -176,17 +207,65 @@ function drawNourHairBack(){
 
 }
 
-function drawNourBraids() {
+//draws the braids
+function drawNourBraid() {
  push();
     stroke(hair.color);
     strokeWeight(hair.braid.size);
     line(hair.braid.startX, hair.braid.startY, hair.braid.tipX, hair.braid.tipY);
-    // strokeWeight(20);
-    // line(240, 185, 240, 400);
-    //     stroke(hair.color);
-    //     strokeWeight(20);
-    //     line(350, 185, 350, 400);
-    //     strokeWeight(20);
-    //     line(390, 185, 390, 400);
+  line(hair.braid.startX+15, hair.braid.startY, hair.braid.tipX+15, hair.braid.tipY);
   pop();
 }  
+
+
+ // Sets the user position to the mouse position
+function moveUser() {
+  user.x = mouseX;
+  user.y = mouseY;
+}
+
+/**
+ * Displays the user circle
+ */
+function drawUser() {
+  push();
+  noStroke();
+  fill(40, 40, 60, 60);
+  
+  ellipse(user.x, user.y, user.size);
+  pop();
+}
+
+function moveBraid() {
+  // Calculate distance between user and puck and overlap
+  const d = dist(user.x, user.y, hair.braid.tipX, hair.braid.tipY);
+
+  const overlap = d < user.size / 2 + hair.braid.size / 2;
+
+  const overlapRight = user.x > hair.braid.tipX;
+  const overlapLeft = user.x < hair.braid.tipX;
+  const overlapUp = user.y > hair.braid.tipY;
+  const overlapDown = user.y < hair.braid.tipY;
+
+  // overlap check to make puck move (the movement is very specific so mostly diagonal movement happens)
+  if (overlap && overlapRight) {
+    hair.braid.tipX -= 1;
+  }
+  if (overlap && overlapLeft) {
+    hair.braid.tipX += 1;
+  }
+  if (overlap && overlapUp) {
+    hair.braid.tipY -= 1;
+  }
+  if (overlap && overlapDown) {
+    hair.braid.tipY += 1;
+  }
+}
+
+function mouseDragged() {
+  // Set the color based on the mouse position, and draw a line
+  // from the previous position to the current position
+  stroke(hair.color);
+   strokeWeight(20);
+  line(pmouseX, pmouseY, mouseX, mouseY);
+}
