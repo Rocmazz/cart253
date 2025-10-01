@@ -81,6 +81,7 @@ function draw() {
   drawNourEyes();
   drawNourIris();
   drawNourMouth();
+  drawNourHairline();
 }
 
 // Draw Head
@@ -125,5 +126,13 @@ function drawNourMouth() {
   noStroke();
   fill("#FFFFFFEE");
   arc(300, 375, 100, 70, 0, 180)
+  pop();
+}
+
+function drawNourHairline() {
+  push();
+  noStroke();
+  fill("#000000EE");
+  arc(300, 195, 230, 115, 180, 360);
   pop();
 }
