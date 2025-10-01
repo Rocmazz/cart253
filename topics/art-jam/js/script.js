@@ -10,6 +10,18 @@
 // Skin Tone
 let skin = "#BD8B5AFF";
 
+//Hair color
+let hair = {
+  color: "#000000EE",
+  braid:{
+  startX: 200,
+  startY: 185,
+  tipX: 200,
+  tipY: 400,
+  size: 20,
+}
+};
+
 // My Head
 let nourHead = {
   // Position and size
@@ -83,7 +95,7 @@ function draw() {
   drawNourIris();
   drawNourMouth();
   drawNourHairline();
-  drawNourBraid();
+  drawNourBraids();
 }
 
 // Draw Head
@@ -115,11 +127,16 @@ function drawNourEyes() {
 
 //Draw Iris
 function drawNourIris() {
-  push();
+   const irisFollow = 4; // how far the pupils can move
+   // map mouse to small offset
+   const irisX = map(mouseX, 0, width, -irisFollow, irisFollow);
+   const irisY = map(mouseY, 0, height, -irisFollow, irisFollow);
+    push();
+  
   noStroke();
   fill("#000000EE");
-  ellipse(nourIris.L.x, nourIris.L.y, nourIris.L.w, nourIris.L.h);
-  ellipse(nourIris.R.x, nourIris.R.y, nourIris.R.w, nourIris.R.h);
+ellipse(nourIris.L.x + irisX, nourIris.L.y + irisY, nourIris.L.w, nourIris.L.h);
+ellipse(nourIris.R.x + irisX, nourIris.R.y + irisY, nourIris.R.w, nourIris.R.h);
   pop();
 }
 
@@ -134,7 +151,7 @@ function drawNourMouth() {
 function drawNourHairline() {
   push();
   noStroke();
-  fill("#000000EE");
+  fill(hair.color);
   arc(300, 195, 230, 115, 180, 360);
   pop();
 }
@@ -142,9 +159,11 @@ function drawNourHairline() {
 function drawNourHairBack(){
   push();
   noStroke();
-  fill("#000000EE");
+  //Back hairbun
+  fill(hair.color);
  ellipse(300,175,100);
-    stroke("#000000EE");  
+ // back braids
+    stroke(hair.color);  
  strokeWeight(20);
    line(170, 250, 180, 500);
    line(195, 185, 205, 500);
@@ -157,17 +176,17 @@ function drawNourHairBack(){
 
 }
 
-function drawNourBraid() {
+function drawNourBraids() {
  push();
-    stroke("#000000EE");
-    strokeWeight(20);
-    line(200, 185, 200, 400);
-    strokeWeight(20);
-    line(240, 185, 240, 400);
-        stroke("#000000EE");
-        strokeWeight(20);
-        line(350, 185, 350, 400);
-        strokeWeight(20);
-        line(390, 185, 390, 400);
+    stroke(hair.color);
+    strokeWeight(hair.braid.size);
+    line(hair.braid.startX, hair.braid.startY, hair.braid.tipX, hair.braid.tipY);
+    // strokeWeight(20);
+    // line(240, 185, 240, 400);
+    //     stroke(hair.color);
+    //     strokeWeight(20);
+    //     line(350, 185, 350, 400);
+    //     strokeWeight(20);
+    //     line(390, 185, 390, 400);
   pop();
 }  
