@@ -77,11 +77,13 @@ function setup() {
 function draw() {
   background("#595959FF");
   drawNourBody();
+    drawNourHairBack();
   drawNourHead();
   drawNourEyes();
   drawNourIris();
   drawNourMouth();
   drawNourHairline();
+  drawNourBraid();
 }
 
 // Draw Head
@@ -136,3 +138,36 @@ function drawNourHairline() {
   arc(300, 195, 230, 115, 180, 360);
   pop();
 }
+
+function drawNourHairBack(){
+  push();
+  noStroke();
+  fill("#000000EE");
+ ellipse(300,175,100);
+    stroke("#000000EE");  
+ strokeWeight(20);
+   line(170, 250, 180, 500);
+   line(195, 185, 205, 500);
+   line(235, 185, 245, 500);
+   line(355, 185, 345, 500);
+   line(395, 185, 385, 500);
+   line(420, 250, 410, 500);
+  pop();
+
+
+}
+
+function drawNourBraid() {
+ push();
+    stroke("#000000EE");
+    strokeWeight(20);
+    line(200, 185, 200, 400);
+    strokeWeight(20);
+    line(240, 185, 240, 400);
+        stroke("#000000EE");
+        strokeWeight(20);
+        line(350, 185, 350, 400);
+        strokeWeight(20);
+        line(390, 185, 390, 400);
+  pop();
+}  
