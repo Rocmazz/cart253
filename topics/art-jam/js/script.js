@@ -2,11 +2,25 @@
  * Art Jam: Self Portrait
  * Noureddine Mazzene
  * 
- * HOW EMBARRASSING! I HAVE NO DESCRIPTION OF MY PROJECT!
- * PLEASE REMOVE A GRADE FROM MY WORK IF IT'S GRADED!
+ * A self portrait of myself using p5
  */
 
+
 "use strict";
+
+// Skin Tone
+let skin = "#BD8B5AFF"
+
+
+// My Head
+let nourHead = {
+    // Position and size
+    x:300,
+    y:300,
+    w:300,
+    h:325,
+}
+
 
 /**
  * Create the canvas
@@ -21,4 +35,16 @@ function setup() {
 */
 function draw() {
     background("#000000FF");
+    drawNourHead();
+}
+
+
+
+// Draw Head
+function drawNourHead(){
+    push();
+    noStroke();
+    fill(skin);
+    ellipse(nourHead.x, nourHead.y, nourHead.w, nourHead.h)
+    pop();
 }
