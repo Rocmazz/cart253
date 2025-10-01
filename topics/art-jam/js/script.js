@@ -1,25 +1,23 @@
 /**
  * Art Jam: Self Portrait
  * Noureddine Mazzene
- * 
+ *
  * A self portrait of myself using p5
  */
-
 
 "use strict";
 
 // Skin Tone
-let skin = "#BD8B5AFF"
-
+let skin = "#BD8B5AFF";
 
 // My Head
 let nourHead = {
-    // Position and size
-    x:300,
-    y:300,
-    w:300,
-    h:325,
-}
+  // Position and size
+  x: 300,
+  y: 300,
+  w: 300,
+  h: 325,
+};
 
 let nourBody = {
   //Position and size
@@ -31,38 +29,62 @@ let nourBody = {
   color: "#1071bc",
 };
 
+let nourEyes = {
+  //Left Eye
+  L: {
+    x: 240,
+    y: 280,
+    w: 75,
+    h: 50,
+  },
+  R: {
+    x: 360,
+    y: 280,
+    w: 75,
+    h: 50,
+  },
+};
+
 /**
  * Create the canvas
-*/
+ */
 function setup() {
-    createCanvas(600, 600);
+  createCanvas(600, 600);
 }
-
 
 /**
- * OOPS I DIDN'T DESCRIBE WHAT MY DRAW DOES!
-*/
+ * Draw My Self Portrait
+ */
 function draw() {
-    background("#000000FF");
-    drawNourBody();
-    drawNourHead();
+  background("#000000FF");
+  drawNourBody();
+  drawNourHead();
+  drawNourEyes();
 }
-
-
 
 // Draw Head
-function drawNourHead(){
-    push();
-    noStroke();
-    fill(skin);
-    ellipse(nourHead.x, nourHead.y, nourHead.w, nourHead.h)
-    pop();
+function drawNourHead() {
+  push();
+  noStroke();
+  fill(skin);
+  ellipse(nourHead.x, nourHead.y, nourHead.w, nourHead.h);
+  pop();
 }
-
+//Draw Body
 function drawNourBody() {
   push();
   noStroke();
   fill(nourBody.color);
   ellipse(nourBody.x, nourBody.y, nourBody.w, nourBody.h);
+  pop();
+}
+
+//Draw Eyes
+function drawNourEyes() {
+  push();
+  noStroke();
+  fill("#FFFFFFEE");
+  ellipse(nourEyes.L.x, nourEyes.L.y, nourEyes.L.w, nourEyes.L.h);
+  ellipse(nourEyes.R.x, nourEyes.R.y, nourEyes.R.w, nourEyes.R.h);
   pop();
 }
