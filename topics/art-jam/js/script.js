@@ -67,6 +67,7 @@ let nourIris = {
  * Create the canvas
  */
 function setup() {
+    angleMode(DEGREES)
   createCanvas(600, 600);
 }
 
@@ -74,11 +75,12 @@ function setup() {
  * Draw My Self Portrait
  */
 function draw() {
-  background("#000000FF");
+  background("#595959FF");
   drawNourBody();
   drawNourHead();
   drawNourEyes();
   drawNourIris();
+  drawNourMouth();
 }
 
 // Draw Head
@@ -118,3 +120,10 @@ function drawNourIris() {
   pop();
 }
 
+function drawNourMouth() {
+  push();
+  noStroke();
+  fill("#FFFFFFEE");
+  arc(300, 375, 100, 70, 0, 180)
+  pop();
+}
