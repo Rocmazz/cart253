@@ -39,6 +39,7 @@ let nourHead = {
   h: 325,
 };
 
+// My Body
 let nourBody = {
   //Position and size
   x: 300,
@@ -66,6 +67,7 @@ let nourEyes = {
   },
 };
 
+
 let nourIris = {
   //Left Iris Size & Proportions
   L: {
@@ -90,6 +92,7 @@ let bgColor = 0
  * Create the canvas
  */
 function setup() {
+  // Set up angle mode for the smile arc
     angleMode(DEGREES)
   createCanvas(600, 600);
 }
@@ -101,6 +104,7 @@ function draw() {
     
   // set the background
   background(bgColor, 5, 80);
+  // Make the background shift from blue to red and loop it
     bgColor += 0.4
     if (bgColor >= 255) {
       bgColor = 0;
@@ -110,7 +114,7 @@ function draw() {
   // Move  user circle
   moveUser();
 
-  // draw Me
+  // draw Me in order of appearance
   drawNourBody();
   drawNourHairBack();
   drawNourHead();
@@ -123,8 +127,10 @@ function draw() {
 // draw user circle
   drawUser();
 
+  // make front braids able to be pulled and moved
   moveBraid();
 
+  //adds trail to mouse user
 mouseDragged();
 
 }
@@ -151,7 +157,9 @@ function drawNourEyes() {
   push();
   noStroke();
   fill("#FFFFFFEE");
+  // Left eye
   ellipse(nourEyes.L.x, nourEyes.L.y, nourEyes.L.w, nourEyes.L.h);
+  // Right eye
   ellipse(nourEyes.R.x, nourEyes.R.y, nourEyes.R.w, nourEyes.R.h);
   pop();
 }
@@ -159,18 +167,21 @@ function drawNourEyes() {
 //Draw Iris
 function drawNourIris() {
    const irisFollow = 4; // how far the pupils can move
-   // map mouse to small offset
+   // Map mouse to small offset of the eyes and iris
    const irisX = map(user.x, 0, width, -irisFollow, irisFollow);
    const irisY = map(user.y, 0, height, -irisFollow, irisFollow);
     push();
   
   noStroke();
   fill("#000000EE");
+  // left iris
 ellipse(nourIris.L.x + irisX, nourIris.L.y + irisY, nourIris.L.w, nourIris.L.h);
+//right iris
 ellipse(nourIris.R.x + irisX, nourIris.R.y + irisY, nourIris.R.w, nourIris.R.h);
   pop();
 }
 
+// draw my mouth
 function drawNourMouth() {
   push();
   noStroke();
@@ -179,6 +190,7 @@ function drawNourMouth() {
   pop();
 }
 
+//draw base hair line
 function drawNourHairline() {
   push();
   noStroke();
@@ -187,13 +199,14 @@ function drawNourHairline() {
   pop();
 }
 
+// draw the hair behind the head
 function drawNourHairBack(){
   push();
   noStroke();
   //Back hairbun
   fill(hair.color);
  ellipse(300,175,100);
- // back braids
+ // back braids left to right
     stroke(hair.color);  
  strokeWeight(20);
    line(170, 250, 180, 500);
@@ -236,6 +249,7 @@ function drawUser() {
   pop();
 }
 
+// function for braids to be pulled and dragged
 function moveBraid() {
   // Calculate distance between user and puck and overlap
   const d = dist(user.x, user.y, hair.braid.tipX, hair.braid.tipY);
@@ -262,8 +276,8 @@ function moveBraid() {
   }
 }
 
+// mouse outline 
 function mouseDragged() {
-  // Set the color based on the mouse position, and draw a line
   // from the previous position to the current position
   stroke(hair.color);
    strokeWeight(20);
