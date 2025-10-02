@@ -12,7 +12,7 @@ A self portrait of myself using p5.
 ## Screenshot(s)
 
 
-[Image of the assignement](./assets/images/clown.png)
+[Image of the assignement](assets/images/Screenshot.png)
 
 ## Attribution
 
