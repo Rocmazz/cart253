@@ -16,3 +16,12 @@ What stood out to me most in this project is the level of expression achieved th
 **Link:** [https://7antics.github.io/cart-253/Jams/Art_Jam/ArtJamTemplate/Art_Jam/](https://7antics.github.io/cart-253/Jams/Art_Jam/ArtJamTemplate/Art_Jam/)
 
 This one immediately felt more like a small game than just a visual sketch or a caricature. You pick one of three doors, and depending on what you choose, the outcome of the character’s day changes. I imagine this involves `if` statements and some way of storing progress because the choices carry through multiple steps. That idea alone really caught my attention. I was also curious about how the student might have used images behind each door, which is something I hadn’t considered in my own work before. The layering of logic, interaction, and visual assets was really what made me ask questions about it in my head. Another thing that made me think was how they handled progression and restarting the experience. It made me wonder how I could build something similar where the state resets smoothly without refreshing the page.
+
+## Project 3: “Art Jam”  
+**Link:** [https://norahwilcox.github.io/CART253/topics/art-jam/](https://norahwilcox.github.io/CART253/topics/art-jam/)
+
+This piece was simpler but visually very satisfying. As a DART student taking this CART class as an elective, I love seeing design sensibilities appear in coding projects. The student’s use of primary colors and simple shapes gives the piece a clean, strong identity. It shows that you don’t need complicated assets to make something that looks good. I also liked the interactivity. The mouse acts like a little fly and the character’s eyes rotate to follow it. That’s something I experimented with too in my project, though in my case, I focused on movement rather than rotation. It was cool to see a similar idea executed differently. This piece reminded me that simple design decisions can make a big difference, and that minimalism can be powerful.
+
+## Final Thoughts
+
+Each project taught me something different. Project 1 showed me how expressive interaction can build a strong narrative, while Project 2 pushed me to think more technically about storing progress and structuring a game loop, and finally Project 3 inspired me visually, reminding me of the value of simplicity and clean design.
