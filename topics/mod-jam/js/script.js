@@ -95,6 +95,28 @@ function draw() {
         moveTongue();
         drawFrog();
         checkTongueFlyOverlap();
+
+        //MOD: Temporary UI for scoring
+        push();
+        fill(0);
+        textSize(16);
+        textAlign(Left, Top);
+        text("Streak: " + streak, 10, 10);
+        text("Misses: " + misses + " / " + maxMiss, 10, 30);
+        pop();
+    }
+
+    //MOD: Win Screen State (Temporary until image made)
+    else if (gameState === "win") {
+        background("#87ceeb")
+        push()
+        textAlign(Center, Center);
+        fill(0);
+        textSize(32)
+        text("GAME OVER", width/2, height/2 - 20);
+        textSize(18)
+        text("You missed: " + misses + " flies", width / 2, height / 2 + 20);
+        pop();
     }
 }
 
@@ -221,6 +243,15 @@ function checkTongueFlyOverlap() {
     // Check if it's an overlap
     const eaten = (d < frog.tongue.size/2 + fly.size/2);
     if (eaten) {
+        // MOD: Eat streak added
+        streak += 1;
+
+        //MOD: Win condition to see if 10 were eating in a row
+        if (streak >= winStreak) {
+            gameState = "win";
+        }
+
+        //MOD: keeping the resetFly function to bring back flies even when eating
         // Reset the fly
         resetFly();
         // Bring back the tongue
@@ -236,10 +267,37 @@ function mousePressed() {
   if (gameState === "title") {
     // MOD: Starts the game in the title screen
     gameState = "play";
-  } else if (gameState === "play") {
+  } 
+
+  else if (gameState === "play") {
     // MOD: Orignial Tongue Control
     if (frog.tongue.state === "idle") {
       frog.tongue.state = "outbound";
     }
   }
+
+  else if(gameState === "win"){
+    //MOD: Click on win to reset game
+    resetGame();
+    gameState = "title";
+  }
+
+else if(gameState === "lose"){
+    //MOD: Click on win to reset game
+    resetGame();
+    gameState = "title";  
+  }
+}
+
+//MOD: Function to reset the game and refresh all stats
+function resetGame() {
+    streak = 0;
+    misses = 0;
+
+    // Resets the frog
+    frog.tongue.state = "idle";
+    frog.tongue.y = 480;
+
+    //Resets the flies
+    resetFly();
 }
