@@ -26,7 +26,7 @@
 "use strict";
 
 //MOD: defining game states
-let gameState = "title"; // "title" or "play" or "lose" or "win"
+let gameState = "credit"; // "credit" or "title" or "play" or "lose" or "win"
 let titleImage;          // the title screen image
 
 //MOD: defining win/loss conditions and scoring
@@ -43,13 +43,16 @@ let loseMusic;
 //MOD: tracks which song should be playing for the state
 let currentMusic = null;
 
+//MOD: defining new frog sprites
+let frogPlayClosedImg;
+let frogPlayOpenImg;
 
 // Our frog
 const frog = {
     // The frog's body has a position and size
     body: {
         x: 320,
-        y: 520,
+        y: 420,
         size: 150
     },
     // The frog's tongue has a position, size, speed, and state
@@ -74,10 +77,14 @@ const fly = {
 
 // MOD: Preloading assests for the game
 function preload() {
-  // Preloads title screen image
+  // MOD: Preloads title screen image
   titleImage = loadImage("assets/images/title-screen.png");
 
-  //Preloads music
+   //MOD: Preloads Frog Sprites
+   frogPlayClosedImg = loadImage("assets/images/frog_play_closed.png");
+   frogPlayOpenImg = loadImage("assets/images/frog_play_open.png");
+
+  //MOD: Preloads music
   titleMusic = loadSound("assets/sounds/title_screen.mp3");
   playMusic = loadSound("assets/sounds/play.mp3");
   winMusic = loadSound("assets/sounds/win.mp3");
@@ -97,12 +104,31 @@ function setup() {
     resetFly();
 
     // MOD: Sets the game state to Title screen
-    setGameState("title");
+    setGameState("credit");
 }
 
 // MOD: Adding game states to the draw function for the title screen 
 function draw() {
-    if (gameState === "title") {
+
+    if (gameState === "credit"){
+        //MOD: Credit screen on game opening
+        background(0); // flat black, you can change it
+
+        push();
+        textAlign(CENTER, CENTER);
+        fill(255);
+        textSize(26);
+        text("CART 215 – Mod Jam", width / 2, height / 2 - 40);
+
+        textSize(18);
+        text("Noueddirne Mazzene", width / 2, height / 2);
+
+        textSize(14);
+        text("Click to continue", width / 2, height / 2 + 50);
+        pop();
+    }
+
+    else if (gameState === "title") {
         // MOD: Title Screen State
         image(titleImage, 0, 0, width, height);
     }
@@ -245,25 +271,32 @@ function moveTongue() {
  * Displays the tongue (tip and line connection) and the frog (body)
  */
 function drawFrog() {
+   // TONGUE DRAW
     // Draw the tongue tip
     push();
-    fill("#ff0000");
+    fill("#ff807d");
     noStroke();
     ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
     pop();
 
     // Draw the rest of the tongue
     push();
-    stroke("#ff0000");
+    stroke("#ff807d");
     strokeWeight(frog.tongue.size);
     line(frog.tongue.x, frog.tongue.y, frog.body.x, frog.body.y);
     pop();
 
-    // Draw the frog's body
+    // MOD: FROG DRAW
     push();
-    fill("#00ff00");
-    noStroke();
-    ellipse(frog.body.x, frog.body.y, frog.body.size);
+    imageMode(CENTER);
+    // MOD: Changing between open and closed mouth sprite
+    let frogImg = frogPlayClosedImg;
+    if(frog.tongue.state === "outbound" || frog.tongue.state === "inbound"){
+        frogImg = frogPlayOpenImg;
+    }
+
+    //MOD: puts the frog sprite according to the pre established frog from the original
+    image(frogImg, frog.body.x, frog.body.y, 180, 180);
     pop();
 }
 
@@ -298,10 +331,14 @@ function checkTongueFlyOverlap() {
  */
 //MOD: Adding game states to mousePresssed for title screen
 function mousePressed() {
-    // start music on mouse press (apparently fixes an issue with music not playing)
-    userStartAudio();
 
-  if (gameState === "title") {
+    if (gameState === "credit"){
+        //MOD: allows for the music of the title screen to play next
+        userStartAudio();
+        setGameState("title");
+    }
+
+ else if (gameState === "title") {
     // MOD: Starts the game in the title screen
     setGameState("play");
   } 
@@ -349,8 +386,13 @@ function setGameState(newState){
         currentMusic.stop();
     }
 
+    //MOD: Adding a credit screen before the title so that the music actually starts on the title because of issue with startup music
+    if (gameState === "credit") {
+        currentMusic = null;
+    }
+
     //MOD: Chooses which song should be playing
-    if (gameState === "title") {
+    else if (gameState === "title") {
         currentMusic = titleMusic;
     }
     else if (gameState === "play") {
@@ -367,4 +409,4 @@ function setGameState(newState){
     if (currentMusic) {
         currentMusic.loop();
     }
-}
+}   
