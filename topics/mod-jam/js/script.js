@@ -20,6 +20,11 @@
 
 "use strict";
 
+//MOD: defining game states
+let gameState = "title"; // "title" or "play"
+let titleImage;          // the title screen image
+
+
 // Our frog
 const frog = {
     // The frog's body has a position and size
