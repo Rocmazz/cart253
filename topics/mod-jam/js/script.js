@@ -18,7 +18,9 @@
  * -Adding music
  * -Changing Frog & Background in game
  * -Adding opening splash screen
- * -
+ * -Adding SFX
+ * -New Movement for flies
+ * -Adding two states for the frog sprite
  * 
  * Made with p5
  * https://p5js.org/
@@ -45,6 +47,12 @@ let winMusic;
 let loseMusic;
 //MOD: tracks which song should be playing for the state
 let currentMusic = null;
+
+// MOD: defining the sound effects
+let sfxClick;
+let sfxTongue;
+let sfxCatch;
+let sfxMiss;
 
 //MOD: defining new frog sprites
 let frogPlayClosedImg;
@@ -109,6 +117,12 @@ function preload() {
   playMusic = loadSound("assets/sounds/play.mp3");
   winMusic = loadSound("assets/sounds/win.mp3");
   loseMusic = loadSound("assets/sounds/loss.mp3");
+
+  //MOD: Preloads SFX
+  sfxClick = loadSound("assets/sounds/click.mp3");
+  sfxTongue = loadSound("assets/sounds/tongue.mp3");
+  sfxCatch = loadSound("assets/sounds/catch.mp3");
+  sfxMiss = loadSound("assets/sounds/miss.wav");
 }
 
 
@@ -225,6 +239,9 @@ function moveFly() {
 function handleMiss() {
     misses += 1;
     streak = 0; // breaks the streak when there's a miss
+
+    //MOD: play miss sfx
+    sfxMiss.play();
 
     //loss condition
     if (misses >= maxMiss) {
@@ -352,6 +369,9 @@ function checkTongueFlyOverlap() {
         // MOD: Eat streak added
         streak += 1;
 
+        // MOD: play catch sfx
+        sfxCatch.play();
+
         //MOD: Win condition to see if 10 were eating in a row
         if (streak >= winStreak) {
             setGameState("win");
@@ -386,6 +406,7 @@ function mousePressed() {
     // MOD: Orignial Tongue Control
     if (frog.tongue.state === "idle") {
       frog.tongue.state = "outbound";
+      sfxTongue.play();
     }
   }
 
@@ -419,6 +440,11 @@ function resetGame() {
 function setGameState(newState){
     // MOD: Sets the gameState to the current state it should be at
     gameState = newState;
+
+    //MOD: Adds SFX when transitioning between states
+    if (sfxClick && gameState !== "splash") {
+      sfxClick.play();
+    }
 
     //MOD: Stops The music when gameState ends
     if (currentMusic && currentMusic.isPlaying()) {
