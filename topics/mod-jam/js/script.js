@@ -72,7 +72,12 @@ const fly = {
     x: 0,
     y: 200, // Will be random
     size: 10,
-    speed: 3
+    speed: 3,
+
+    //MOD: defining modes for different movement
+    mode: "straight", // mode can be: straight, sine, jitter
+    baseY: 200,
+    angle: 0
 };
 
 // MOD: Preloading assests for the game
@@ -187,6 +192,20 @@ function draw() {
 function moveFly() {
     // Move the fly
     fly.x += fly.speed;
+
+    //MOD: Defining all the new modes of movement
+    if (fly.mode === "straight"){}
+    //Referencing mr angry assignement with movement for the fly
+    else if (fly.mode === "sine"){
+        fly.angle += 0.08
+        fly.y = fly.baseY + sin(fly.angle) * 30
+    }
+    
+    else if (fly.mode === "jitter") {
+        fly.y += random(-2, 2);
+    }
+    
+    
     // Handle the fly going off the canvas
     if (fly.x > width) {
         // MOD: Change to handleMiss to calculate lose condition
@@ -228,8 +247,23 @@ function drawFly() {
  * Resets the fly to the left with a random y
  */
 function resetFly() {
-    fly.x = 0;
-    fly.y = random(0, 300);
+   //MOD: adding more room out of the canvas for flies to spawn to not have awkward spawns with new movements
+    fly.x = -20;
+
+    //MOD: using fly.baseY as reference & same room added as before
+    fly.baseY = random(30, 300);
+    fly.y = fly.baseY;
+
+    //MOD: different speed for each fly
+    fly.speed = random(2, 4);
+
+    //MOD: Angle reset for the sine movement
+    fly.angle = 0;
+
+    //MOD: random picker for movement
+    const modes = ["straight", "sine", "jitter"];
+    fly.mode = random(modes);
+
 }
 
 /**
