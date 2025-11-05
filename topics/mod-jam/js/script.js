@@ -1,6 +1,6 @@
 /**
- * Frogfrogfrog
- * Pippin Barr
+ * Frog Game
+ * Noureddine Mazzene
  * 
  * A game of catching flies with your frog-tongue
  * 
