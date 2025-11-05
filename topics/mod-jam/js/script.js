@@ -11,9 +11,10 @@
  * 
  * 
  * Changes List:
- * -Start and Game Over Screen (game states)
+ * -Start, Win screen & Game Over Screen (game states)
  * -Win condition: Eat 10 flies in a row
  * -Lose condition: Miss 3 flies
+ * -UI For score in game
  * 
  * Made with p5
  * https://p5js.org/
