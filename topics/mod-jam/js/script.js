@@ -53,6 +53,15 @@ const fly = {
     speed: 3
 };
 
+// MOD: Preloading assests for the game
+function preload() {
+  // Preloads title screen image
+  titleImage = loadImage("title-screen.png");
+}
+
+
+
+
 /**
  * Creates the canvas and initializes the fly
  */
