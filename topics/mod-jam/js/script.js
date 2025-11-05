@@ -16,8 +16,9 @@
  * -Lose condition: Miss 3 flies
  * -UI For score in game
  * -Adding music
- * 
- * 
+ * -Changing Frog & Background in game
+ * -Adding opening splash screen
+ * -
  * 
  * Made with p5
  * https://p5js.org/
@@ -48,6 +49,12 @@ let currentMusic = null;
 //MOD: defining new frog sprites
 let frogPlayClosedImg;
 let frogPlayOpenImg;
+
+//MOD: defining ingame background
+let gameBgImg
+
+//MOD: defining X icon for misses
+let missIconImg
 
 // Our frog
 const frog = {
@@ -87,11 +94,15 @@ function preload() {
   // MOD: Preloads the screen images
   titleImage = loadImage("assets/images/title-screen.png");
   winImage = loadImage("assets/images/winscreen.png");
-  loseImage = loadImage("assets/images/losescreen.png")
+  loseImage = loadImage("assets/images/losescreen.png");
+  gameBgImg = loadImage("assets/images/background-ingame.png");
 
    //MOD: Preloads Frog Sprites
    frogPlayClosedImg = loadImage("assets/images/frog_play_closed.png");
    frogPlayOpenImg = loadImage("assets/images/frog_play_open.png");
+
+   //MOD: Preloads X Miss icon
+   missIconImg = loadImage("assets/images/miss_x.png")
 
   //MOD: Preloads music
   titleMusic = loadSound("assets/sounds/title_screen.mp3");
@@ -144,7 +155,7 @@ function draw() {
 
     else if (gameState === "play") {
       //MOD: Gameplay State
-      background("#87ceeb");
+      image(gameBgImg, 0, 0)
       moveFly();
       drawFly();
       moveFrog();
@@ -153,13 +164,7 @@ function draw() {
       checkTongueFlyOverlap();
 
       //MOD: UI for scoring
-      push();
-      fill(255);
-      textSize(16);
-      textAlign(LEFT, TOP);
-      text("Streak: " + streak, 10, 10);
-      text("Misses: " + misses + " / " + maxMiss, 10, 30);
-      pop();
+      drawHUD();
     }
 
     //MOD: Win Screen State 
@@ -444,3 +449,50 @@ function setGameState(newState){
         currentMusic.loop();
     }
 }   
+
+//MOD: Adding a function for the hud to better display score instead of just displaying numbers
+function drawHUD() {
+    // MOD: win streak bar or just hunger bar
+    const barX = 20;
+    const barY = 20;
+    const barWidth = 200;
+    const barHeight = 16;
+    
+    // bar goes 0 to 10
+    const ratio = constrain(streak / winStreak, 0, 1);
+
+    // background box for bar
+    push();
+    noStroke();
+    fill(0, 0, 0, 60);
+    rect(barX - 2, barY - 2, barWidth + 4, barHeight + 4, 6);
+
+    // green bar as you build streak
+    fill("#94c400");
+    rect(barX, barY, barWidth * ratio, barHeight, 4);
+    pop();
+
+     // MOD: Miss icon definition (X Icon)
+    const iconSize = 32;
+    const spacing = 8;
+    const totalWidth = maxMiss * iconSize + (maxMiss - 1) * spacing;
+    const startX = width - totalWidth - 20;
+    const iconY = 15;
+
+    // MOD: make the X icon show up as you miss and placeholders before missing
+    push();
+    imageMode(CENTER);
+    for (let i = 0; i < maxMiss; i++) {
+        const x = startX + i * (iconSize + spacing);
+
+        if (i < misses) {
+            // missed flies show the X
+            image(missIconImg, x + iconSize / 2, iconY + iconSize / 2, iconSize, iconSize);
+        } else {
+            // potential misses show a dark version of the X icon
+            tint(80);
+            image(missIconImg, x + iconSize / 2, iconY + iconSize / 2, iconSize, iconSize);
+        }
+    }
+    pop();
+}
