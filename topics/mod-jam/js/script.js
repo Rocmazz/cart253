@@ -87,36 +87,49 @@ function draw() {
     }
 
     else if (gameState === "play") {
-        //MOD: Gameplay State
-        background("#87ceeb");
-        moveFly();
-        drawFly();
-        moveFrog();
-        moveTongue();
-        drawFrog();
-        checkTongueFlyOverlap();
+      //MOD: Gameplay State
+      background("#87ceeb");
+      moveFly();
+      drawFly();
+      moveFrog();
+      moveTongue();
+      drawFrog();
+      checkTongueFlyOverlap();
 
-        //MOD: Temporary UI for scoring
-        push();
-        fill(0);
-        textSize(16);
-        textAlign(Left, Top);
-        text("Streak: " + streak, 10, 10);
-        text("Misses: " + misses + " / " + maxMiss, 10, 30);
-        pop();
+      //MOD: Temporary UI for scoring
+      push();
+      fill(0);
+      textSize(16);
+      textAlign(LEFT, TOP);
+      text("Streak: " + streak, 10, 10);
+      text("Misses: " + misses + " / " + maxMiss, 10, 30);
+      pop();
     }
 
     //MOD: Win Screen State (Temporary until image made)
     else if (gameState === "win") {
-        background("#87ceeb")
-        push()
-        textAlign(Center, Center);
-        fill(0);
-        textSize(32)
-        text("GAME OVER", width/2, height/2 - 20);
-        textSize(18)
-        text("You missed: " + misses + " flies", width / 2, height / 2 + 20);
-        pop();
+      background("#87ceeb");
+      push();
+      textAlign(CENTER, CENTER);
+      fill(0);
+      textSize(32);
+      text("YOU WIN!", width / 2, height / 2 - 20);
+      textSize(18);
+      text("You ate " + streak + " flies in a row!", width / 2, height / 2 + 20);
+      pop();
+    }
+
+    //MOD: Lose Screen State (Temporary until image made)
+    else if (gameState === "lose") {
+      background("#87ceeb");
+      push();
+      textAlign(CENTER, CENTER);
+      fill(0);
+      textSize(32);
+      text("GAME OVER", width / 2, height / 2 - 20);
+      textSize(18);
+      text("You missed " + misses + " flies...", width / 2, height / 2 + 20);
+      pop();
     }
 }
 
