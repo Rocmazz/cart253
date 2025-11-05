@@ -95,6 +95,9 @@ function setup() {
 
     // Give the fly its first random position
     resetFly();
+
+    // MOD: Sets the game state to Title screen
+    setGameState("title");
 }
 
 // MOD: Adding game states to the draw function for the title screen 
@@ -175,7 +178,7 @@ function handleMiss() {
 
     //loss condition
     if (misses >= maxMiss) {
-        gameState = "lose";
+        setGameState("lose");
     }
 
     // call back to resetFly to bring new ones again
@@ -279,7 +282,7 @@ function checkTongueFlyOverlap() {
 
         //MOD: Win condition to see if 10 were eating in a row
         if (streak >= winStreak) {
-            gameState = "win";
+            setGameState("win");
         }
 
         //MOD: keeping the resetFly function to bring back flies even when eating
@@ -295,9 +298,12 @@ function checkTongueFlyOverlap() {
  */
 //MOD: Adding game states to mousePresssed for title screen
 function mousePressed() {
+    // start music on mouse press (apparently fixes an issue with music not playing)
+    userStartAudio();
+
   if (gameState === "title") {
     // MOD: Starts the game in the title screen
-    gameState = "play";
+    setGameState("play");
   } 
 
   else if (gameState === "play") {
@@ -310,13 +316,13 @@ function mousePressed() {
   else if(gameState === "win"){
     //MOD: Click on win to reset game
     resetGame();
-    gameState = "title";
+    setGameState("title");
   }
 
 else if(gameState === "lose"){
-    //MOD: Click on win to reset game
+    //MOD: Click on lose to reset game
     resetGame();
-    gameState = "title";  
+    setGameState("title");  
   }
 }
 
@@ -331,4 +337,34 @@ function resetGame() {
 
     //Resets the flies
     resetFly();
+}
+
+//MOD: Function to check game state
+function setGameState(newState){
+    // MOD: Sets the gameState to the current state it should be at
+    gameState = newState;
+
+    //MOD: Stops The music when gameState ends
+    if (currentMusic && currentMusic.isPlaying()) {
+        currentMusic.stop();
+    }
+
+    //MOD: Chooses which song should be playing
+    if (gameState === "title") {
+        currentMusic = titleMusic;
+    }
+    else if (gameState === "play") {
+        currentMusic = playMusic
+    }
+    else if (gameState === "win") {
+        currentMusic = winMusic
+    }
+    else if (gameState === "lose") {
+        currentMusic = loseMusic
+    }
+
+    // MOD: Starts the song and loops it
+    if (currentMusic) {
+        currentMusic.loop();
+    }
 }
