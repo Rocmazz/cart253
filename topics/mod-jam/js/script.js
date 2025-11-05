@@ -12,7 +12,8 @@
  * 
  * Changes List:
  * -Start and Game Over Screen (game states)
- * 
+ * -Win condition: Eat 10 flies in a row
+ * -Lose condition: Miss 3 flies
  * 
  * Made with p5
  * https://p5js.org/
@@ -21,8 +22,14 @@
 "use strict";
 
 //MOD: defining game states
-let gameState = "title"; // "title" or "play"
+let gameState = "title"; // "title" or "play" or "lose"
 let titleImage;          // the title screen image
+
+//MOD: defining win/loss conditions and scoring
+let streak = 0; //total flies eaten in a row
+let misses = 0; // total flies missed
+const winStreak = 10; // eating 10 in a row = win
+const maxMiss = 3; // missing 3 = loss
 
 
 // Our frog
@@ -100,9 +107,29 @@ function moveFly() {
     fly.x += fly.speed;
     // Handle the fly going off the canvas
     if (fly.x > width) {
-        resetFly();
+        // MOD: Change to handleMiss to calculate lose condition
+        handleMiss();
     }
 }
+
+/**
+ * MOD: New function to check misses and loss
+ * Handles a miss when a fly goes past the canvas
+ */
+function handleMiss() {
+    misses += 1;
+    streak = 0; // breaks the streak when there's a miss
+
+    //loss condition
+    if (misses >= maxMiss) {
+        gameState = "lose";
+    }
+
+    // call back to resetFly to bring new ones again
+    resetFly();
+}
+
+
 
 /**
  * Draws the fly as a black circle
@@ -186,6 +213,7 @@ function drawFrog() {
 
 /**
  * Handles the tongue overlapping the fly
+ * MOD: Adding scoring and win condition to this function
  */
 function checkTongueFlyOverlap() {
     // Get distance from tongue to fly
