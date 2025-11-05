@@ -26,7 +26,7 @@
 "use strict";
 
 //MOD: defining game states
-let gameState = "title"; // "title" or "play" or "lose"
+let gameState = "title"; // "title" or "play" or "lose" or "win"
 let titleImage;          // the title screen image
 
 //MOD: defining win/loss conditions and scoring
@@ -34,6 +34,14 @@ let streak = 0; //total flies eaten in a row
 let misses = 0; // total flies missed
 const winStreak = 10; // eating 10 in a row = win
 const maxMiss = 3; // missing 3 = loss
+
+//MOD: defining music states
+let titleMusic;
+let playMusic
+let winMusic;
+let loseMusic;
+//MOD: tracks which song should be playing for the state
+let currentMusic = null;
 
 
 // Our frog
@@ -68,6 +76,12 @@ const fly = {
 function preload() {
   // Preloads title screen image
   titleImage = loadImage("assets/images/title-screen.png");
+
+  //Preloads music
+  titleMusic = loadSound("assets/sounds/title_screen.mp3");
+  playMusic = loadSound("assets/sounds/play.mp3");
+  winMusic = loadSound("assets/sounds/win.mp3");
+  loseMusic = loadSound("assets/sounds/loss.mp3");
 }
 
 
