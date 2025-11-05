@@ -9,6 +9,11 @@
  * - Click to launch the tongue
  * - Catch flies
  * 
+ * 
+ * Changes List:
+ * -Start and Game Over Screen (game states)
+ * 
+ * 
  * Made with p5
  * https://p5js.org/
  */
