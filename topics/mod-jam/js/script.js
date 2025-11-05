@@ -56,7 +56,7 @@ const fly = {
 // MOD: Preloading assests for the game
 function preload() {
   // Preloads title screen image
-  titleImage = loadImage("title-screen.png");
+  titleImage = loadImage("assets/images/title-screen.png");
 }
 
 
@@ -72,14 +72,23 @@ function setup() {
     resetFly();
 }
 
+// MOD: Adding game states to the draw function for the title screen 
 function draw() {
-    background("#87ceeb");
-    moveFly();
-    drawFly();
-    moveFrog();
-    moveTongue();
-    drawFrog();
-    checkTongueFlyOverlap();
+    if (gameState === "title") {
+        // MOD: Title Screen State
+        image(titleImage, 0, 0, width, height);
+    }
+
+    else if (gameState === "play") {
+        //MOD: Gameplay State
+        background("#87ceeb");
+        moveFly();
+        drawFly();
+        moveFrog();
+        moveTongue();
+        drawFrog();
+        checkTongueFlyOverlap();
+    }
 }
 
 /**
@@ -194,8 +203,15 @@ function checkTongueFlyOverlap() {
 /**
  * Launch the tongue on click (if it's not launched yet)
  */
+//MOD: Adding game states to mousePresssed for title screen
 function mousePressed() {
+  if (gameState === "title") {
+    // MOD: Starts the game in the title screen
+    gameState = "play";
+  } else if (gameState === "play") {
+    // MOD: Orignial Tongue Control
     if (frog.tongue.state === "idle") {
-        frog.tongue.state = "outbound";
+      frog.tongue.state = "outbound";
     }
+  }
 }
