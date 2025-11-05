@@ -28,6 +28,8 @@
 //MOD: defining game states
 let gameState = "credit"; // "credit" or "title" or "play" or "lose" or "win"
 let titleImage;          // the title screen image
+let winImage; // the win screen
+let loseImage; // the lose screen
 
 //MOD: defining win/loss conditions and scoring
 let streak = 0; //total flies eaten in a row
@@ -82,8 +84,10 @@ const fly = {
 
 // MOD: Preloading assests for the game
 function preload() {
-  // MOD: Preloads title screen image
+  // MOD: Preloads the screen images
   titleImage = loadImage("assets/images/title-screen.png");
+  winImage = loadImage("assets/images/winscreen.png");
+  loseImage = loadImage("assets/images/losescreen.png")
 
    //MOD: Preloads Frog Sprites
    frogPlayClosedImg = loadImage("assets/images/frog_play_closed.png");
@@ -148,9 +152,9 @@ function draw() {
       drawFrog();
       checkTongueFlyOverlap();
 
-      //MOD: Temporary UI for scoring
+      //MOD: UI for scoring
       push();
-      fill(0);
+      fill(255);
       textSize(16);
       textAlign(LEFT, TOP);
       text("Streak: " + streak, 10, 10);
@@ -158,29 +162,25 @@ function draw() {
       pop();
     }
 
-    //MOD: Win Screen State (Temporary until image made)
+    //MOD: Win Screen State 
     else if (gameState === "win") {
-      background("#87ceeb");
+      image(winImage, 0, 0)
       push();
       textAlign(CENTER, CENTER);
-      fill(0);
+      fill(255);
       textSize(32);
-      text("YOU WIN!", width / 2, height / 2 - 20);
-      textSize(18);
-      text("You ate " + streak + " flies in a row!", width / 2, height / 2 + 20);
+      text("You ate " + streak + " flies in a row!", 425, 300);
       pop();
     }
 
     //MOD: Lose Screen State (Temporary until image made)
     else if (gameState === "lose") {
-      background("#87ceeb");
+      image(loseImage, 0, 0);
       push();
       textAlign(CENTER, CENTER);
-      fill(0);
-      textSize(32);
-      text("GAME OVER", width / 2, height / 2 - 20);
+      fill(255);
       textSize(18);
-      text("You missed " + misses + " flies...", width / 2, height / 2 + 20);
+      text("You missed " + misses + " flies...", 125, height / 2 + 40);
       pop();
     }
 }
