@@ -152,10 +152,10 @@ function draw() {
         textAlign(CENTER, CENTER);
         fill(255);
         textSize(26);
-        text("CART 215 – Mod Jam", width / 2, height / 2 - 40);
+        text("CART 253aa – Mod Jam", width / 2, height / 2 - 40);
 
         textSize(18);
-        text("Noueddirne Mazzene", width / 2, height / 2);
+        text("Noureddine Mazzene", width / 2, height / 2);
 
         textSize(14);
         text("Click to continue", width / 2, height / 2 + 50);
