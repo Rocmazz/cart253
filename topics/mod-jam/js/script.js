@@ -15,6 +15,9 @@
  * -Win condition: Eat 10 flies in a row
  * -Lose condition: Miss 3 flies
  * -UI For score in game
+ * -Adding music
+ * 
+ * 
  * 
  * Made with p5
  * https://p5js.org/
