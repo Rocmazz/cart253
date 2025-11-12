@@ -19,7 +19,8 @@ function setup() {
  * gradually lightening colour
  */
 function draw() {
-  background("pink");
+//   background("pink");
+
 
   let x1 = 0
   let x2 = 0
@@ -29,6 +30,11 @@ function draw() {
 
   let baseStroke = 0
   let strokeAdd = 25
+
+
+  gradientBG();
+
+
 
   while (x1 <= width) {
       stroke(baseStroke);
@@ -54,4 +60,15 @@ function draw() {
     
 
 
+}
+
+function gradientBG() {
+  push();
+  for (let x1 = 0; x1 <= width; x1++) {
+    let r = map(x1, 0, width, 0, 255); 
+    let g = map(x1, 0, width, 255, 0); 
+    stroke(r, g, 0);
+    line(x1, 0, x1, height);
+  }
+  pop();
 }
