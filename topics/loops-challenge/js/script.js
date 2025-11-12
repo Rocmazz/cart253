@@ -21,11 +21,24 @@ function setup() {
 function draw() {
   background("pink");
 
-  stroke(0);
-  line(0, 0, 0, height);
+  let x1 = 0
+  let x2 = 0
+  let y1 =0
+  let y2 = height
+  let distance = 50
 
-  stroke(25);
-  line(50, 0, 50, height);
+  let baseStroke = 0
+  let strokeAdd = 25
+
+  stroke(baseStroke);
+  line(x1, x2, y1, y2);
+
+x1 += distance
+y1 += distance
+baseStroke += strokeAdd
+
+  stroke(baseStroke);
+  line(x1, x2, y1, y2);
 
   stroke(50);
   line(100, 0, 100, height);
