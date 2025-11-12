@@ -30,40 +30,44 @@ function draw() {
   let baseStroke = 0
   let strokeAdd = 25
 
-  stroke(baseStroke);
-  line(x1, x2, y1, y2);
+  while (x1 <= width) {
+      stroke(baseStroke);
+      line(x1, x2, y1, y2);
 
-x1 += distance
-y1 += distance
-baseStroke += strokeAdd
+      x1 += distance;
+      y1 += distance;
+      baseStroke += strokeAdd;
+  }
 
-  stroke(baseStroke);
-  line(x1, x2, y1, y2);
 
-  stroke(50);
-  line(100, 0, 100, height);
 
-  stroke(75);
-  line(150, 0, 150, height);
+//   stroke(baseStroke);
+//   line(x1, x2, y1, y2);
 
-  stroke(100);
-  line(200, 0, 200, height);
+//   stroke(50);
+//   line(100, 0, 100, height);
 
-  stroke(125);
-  line(250, 0, 250, height);
+//   stroke(75);
+//   line(150, 0, 150, height);
 
-  stroke(150);
-  line(300, 0, 300, height);
+//   stroke(100);
+//   line(200, 0, 200, height);
 
-  stroke(175);
-  line(350, 0, 350, height);
+//   stroke(125);
+//   line(250, 0, 250, height);
 
-  stroke(200);
-  line(400, 0, 400, height);
+//   stroke(150);
+//   line(300, 0, 300, height);
 
-  stroke(225);
-  line(450, 0, 450, height);
+//   stroke(175);
+//   line(350, 0, 350, height);
 
-  stroke(250);
-  line(500, 0, 500, height);
+//   stroke(200);
+//   line(400, 0, 400, height);
+
+//   stroke(225);
+//   line(450, 0, 450, height);
+
+//   stroke(250);
+//   line(500, 0, 500, height);
 }
