@@ -20,11 +20,7 @@ let lang = "fr";
 let carsJsonData = null;
 let dinoJsonData = null;
 
-// random car from cars data
-let randomCar = random(carsJsonData.cars);
 
-// random dino from dino data
-let randomDino = random(dinoJsonData.dinosaurs);
 
 // Starts with the instruction
 let carName = "Click to generate a car name.";
@@ -62,6 +58,12 @@ function draw() {
  * Generate a new car name
  */
 function mousePressed() {
-// random car and dino name on mouse click
+  // random car from cars data
+  let randomCar = random(carsJsonData.cars);
+
+  // random dino from dino data
+  let randomDino = random(dinoJsonData.dinosaurs);
+  
+  // random car and dino name on mouse click
   carName = randomCar + " " + randomDino;
 }
