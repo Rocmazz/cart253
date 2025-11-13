@@ -15,8 +15,16 @@ let carData = undefined;
 let dinosaurData = undefined;
 let langData = undefined;
 let lang = "fr";
+
+//loading data files
 let carsJsonData = null;
 let dinoJsonData = null;
+
+// random car from cars data
+let randomCar = random(carsJsonData.cars);
+
+// random dino from dino data
+let randomDino = random(dinoJsonData.dinosaurs);
 
 // Starts with the instruction
 let carName = "Click to generate a car name.";
@@ -53,4 +61,7 @@ function draw() {
 /**
  * Generate a new car name
  */
-function mousePressed() {}
+function mousePressed() {
+// random car and dino name on mouse click
+  carName = randomCar + " " + randomDino;
+}
