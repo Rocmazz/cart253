@@ -15,6 +15,8 @@ let carData = undefined;
 let dinosaurData = undefined;
 let langData = undefined;
 let lang = "fr";
+let carsJsonData = null;
+let dinoJsonData = null;
 
 // Starts with the instruction
 let carName = "Click to generate a car name.";
@@ -22,7 +24,10 @@ let carName = "Click to generate a car name.";
 /**
  * Load the car and dinosaur data
  */
-function preload() {}
+function preload() {
+        carsJsonData = loadJSON("assets/data/cars.json")
+        dinoJsonData = loadJSON("assets/data/dinosaurs.json");
+}
 
 /**
  * Create the canvas
