@@ -28,6 +28,15 @@
 
 "use strict";
 
+// NEW MOD: defining back to menu button on title screen
+const backToMenuButton = {
+  x: 540,
+  y: 430,
+  w: 150,
+  h: 40
+};
+
+
 //MOD: defining game states
 let gameState = "credit"; // "credit" or "title" or "play" or "lose" or "win"
 let titleImage;          // the title screen image
@@ -169,8 +178,11 @@ function draw() {
     }
 
     else if (gameState === "title") {
-        // MOD: Title Screen State
-        image(titleImage, 0, 0, width, height);
+      // MOD: Title Screen State
+      image(titleImage, 0, 0, width, height);
+
+      // NEW MOD: draw "Back to Menu" button on top of the title screen
+      drawBackToMenuButton();
     }
 
     else if (gameState === "play") {
@@ -404,8 +416,20 @@ function mousePressed() {
     }
 
  else if (gameState === "title") {
+     // NEW MOD: check if click is on "Back to Menu" button
+  const overBackButton =
+    mouseX > backToMenuButton.x - backToMenuButton.w / 2 &&
+    mouseX < backToMenuButton.x + backToMenuButton.w / 2 &&
+    mouseY > backToMenuButton.y - backToMenuButton.h / 2 &&
+    mouseY < backToMenuButton.y + backToMenuButton.h / 2;
+
+  if (overBackButton) {
+    // NEW MOD: go back to main menu page
+    window.location.href = "index.html";
+  } else {
     // MOD: Starts the game in the title screen
     setGameState("play");
+   }
   } 
 
   else if (gameState === "play") {
@@ -527,4 +551,32 @@ function drawHUD() {
         }
     }
     pop();
+}
+
+// NEW MOD: draws the "Back to Menu" button on the title screen
+function drawBackToMenuButton() {
+    // NEW MOD: defining hovering around button size and edges
+  const hovering =
+    mouseX > backToMenuButton.x - backToMenuButton.w / 2 &&
+    mouseX < backToMenuButton.x + backToMenuButton.w / 2 &&
+    mouseY > backToMenuButton.y - backToMenuButton.h / 2 &&
+    mouseY < backToMenuButton.y + backToMenuButton.h / 2;
+
+  push();
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  textSize(16);
+
+  // button background
+  if (hovering) {
+    fill(0, 0, 0, 180); // darker on hover
+  } else {
+    fill(0, 0, 0, 140);
+  }
+  rect(backToMenuButton.x, backToMenuButton.y, backToMenuButton.w, backToMenuButton.h, 8);
+
+  // button text
+  fill(255);
+  text("Back to Menu", backToMenuButton.x, backToMenuButton.y + 2);
+  pop();
 }
