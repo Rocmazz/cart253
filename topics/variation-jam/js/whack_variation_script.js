@@ -72,6 +72,9 @@ let gameBgImg;
 //MOD: defining X icon for misses
 let missIconImg;
 
+// NEW MOD: defining sprite for fly
+let flyImg;
+
 // Our frog
 const frog = {
   // The frog's body has a position and size
@@ -91,19 +94,22 @@ const frog = {
   },
 };
 
-// Our fly
-// Has a position, size, and speed of horizontal movement
+// Our mole but fly in name
 const fly = {
   x: 0,
-  y: 200, // Will be random
-  size: 10,
-  speed: 3,
-
-  //MOD: defining modes for different movement
-  mode: "straight", // mode can be: straight, sine, jitter
-  baseY: 200,
-  angle: 0,
+  y: 0,
+  size: 32,
 };
+
+// Whack-a-mole holes at the top 
+const HOLE_Y = 10; 
+const HOLE_POSITIONS = [120, 320, 520]; 
+
+// defining timing for how long the mole stays visible
+let flyVisible = false; 
+let flySpawnTime = 0;          
+let flyVisibleDuration = 1500; // will be randomized
+
 
 // MOD: Preloading assests for the game
 function preload() {
@@ -125,6 +131,9 @@ function preload() {
 
   //MOD: Preloads X Miss icon
   missIconImg = loadImage("assets/original_game_assets/images/miss_x.png");
+
+  // MOD: Preloads fly sprite
+  flyImg = loadImage("assets/whack_variation_assets/images/fly.png");
 
   //MOD: Preloads music
   titleMusic = loadSound("assets/original_game_assets/sounds/title_screen.mp3");
@@ -214,28 +223,24 @@ function draw() {
 }
 
 /**
- * Moves the fly according to its speed
- * Resets the fly if it gets all the way to the right
+ * Whack-a-mole fly logic
+ * - if no fly is visible spawn one in a random hole
+ * - ff visible check if its time is up and count a miss to spawn a new one
  */
 function moveFly() {
-  // Move the fly
-  fly.x += fly.speed;
-
-  //MOD: Defining all the new modes of movement
-  if (fly.mode === "straight") {
-  }
-  //Referencing mr angry assignement with movement for the fly
-  else if (fly.mode === "sine") {
-    fly.angle += 0.08;
-    fly.y = fly.baseY + sin(fly.angle) * 30;
-  } else if (fly.mode === "jitter") {
-    fly.y += random(-2, 2);
+  if (!flyVisible) {
+    resetFly();
+    return;
   }
 
-  // Handle the fly going off the canvas
-  if (fly.x > width) {
-    // MOD: Change to handleMiss to calculate lose condition
+  const now = millis();
+  const elapsed = now - flySpawnTime;
+
+  if (elapsed > flyVisibleDuration) {
+    // player didn't hit it in time
     handleMiss();
+    // prepare the next fly
+    resetFly();
   }
 }
 
@@ -255,42 +260,49 @@ function handleMiss() {
     setGameState("lose");
   }
 
-  // call back to resetFly to bring new ones again
-  resetFly();
+  // no more resetFly() here because moveFly() handles it
 }
 
 /**
- * Draws the fly as a black circle
+ * Draws the fly (mole) only when visible
  */
 function drawFly() {
+  if (!flyVisible) {
+    return; // nothing to draw
+  }
+
   push();
-  noStroke();
-  fill("#000000");
-  ellipse(fly.x, fly.y, fly.size);
+  imageMode(CENTER);
+  // NEW MOD: draw the sprite scaled based on fly.size
+  if (flyImg) {
+    image(flyImg, fly.x, fly.y, fly.size * 2, fly.size * 2);
+  } else {
+    // placeholder
+    noStroke();
+    fill("#000000");
+    ellipse(fly.x, fly.y, fly.size);
+  }
   pop();
 }
 
+
 /**
- * Resets the fly to the left with a random y
+ * NEW MOD: Spawns a new fly in a random hole at the top
  */
 function resetFly() {
-  //MOD: adding more room out of the canvas for flies to spawn to not have awkward spawns with new movements
-  fly.x = -20;
+  // picks a random hole index
+  const index = floor(random(HOLE_POSITIONS.length));
 
-  //MOD: using fly.baseY as reference & same room added as before
-  fly.baseY = random(30, 300);
-  fly.y = fly.baseY;
+  fly.x = HOLE_POSITIONS[index];
+  fly.y = HOLE_Y;
 
-  //MOD: different speed for each fly
-  fly.speed = random(2, 4);
+  // random between 1 and 2 seconds
+  flyVisibleDuration = random(1000, 2000);
 
-  //MOD: Angle reset for the sine movement
-  fly.angle = 0;
-
-  //MOD: random picker for movement
-  const modes = ["straight", "sine", "jitter"];
-  fly.mode = random(modes);
+  flyVisible = true;
+  flySpawnTime = millis();
 }
+
 
 /**
  * Moves the frog to the mouse position on x
