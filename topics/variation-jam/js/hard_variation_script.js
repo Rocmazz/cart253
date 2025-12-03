@@ -1,19 +1,19 @@
 /**
- * Frog Game
+ * Hardcore Frog Game (Variant)
  * Noureddine Mazzene
  *
- * A game of catching flies with your frog-tongue
+ * A game of catching flies with your frog-tongue but with a difficulty twist
  *
  * Instructions:
  * - Move the frog with your mouse
  * - Click to launch the tongue
- * - Catch flies
+ * - Catch flies (Not Bees!!!)
  *
  *
  * Changes List:
  * -Start, Win screen & Game Over Screen (game states)
  * -Win condition: Eat 10 flies in a row
- * -Lose condition: Miss 3 flies
+ * -Lose condition: not winning...
  * -UI For score in game
  * -Adding music
  * -Changing Frog & Background in game
@@ -48,6 +48,10 @@ let misses = 0; // total flies missed
 const winStreak = 10; // eating 10 in a row = win
 const maxMiss = 3; // missing 3 = loss
 
+// NEW MOD: tracks whether the current tongue shot hit something
+let tongueHitThisShot = false;
+
+
 //MOD: defining music states
 let titleMusic;
 let playMusic;
@@ -71,6 +75,13 @@ let gameBgImg;
 
 //MOD: defining X icon for misses
 let missIconImg;
+
+// NEW MOD: defining sprite for fly
+let flyImg;
+
+// NEW MOD: defining sprite for bee
+let beeImg;
+
 
 // Our frog
 const frog = {
@@ -103,7 +114,21 @@ const fly = {
   mode: "straight", // mode can be: straight, sine, jitter
   baseY: 200,
   angle: 0,
+
+  // NEW MOD: defining if it is a bee
+  isBee: false,
 };
+
+
+// NEW MOD: fly size & speed variety
+const baseFlySizeAt0 = 18;  // starting size before streak
+const flySizeAt5 = 10;      // original size when midway through
+const minFlySizeAt10 = 8;   // tiny size when streak is high
+
+const baseMinSpeed = 2;     // base min speed at low streak
+const baseMaxSpeed = 4;     // base max speed at low streak
+const extraMaxSpeed = 2;    // extra speed added by streak
+
 
 // MOD: Preloading assests for the game
 function preload() {
@@ -117,14 +142,20 @@ function preload() {
 
   //MOD: Preloads Frog Sprites
   frogPlayClosedImg = loadImage(
-    "assets/original_game_assets/images/frog_play_closed.png"
+    "assets/hard_variation_assets/images/frog_play_closed.png"
   );
   frogPlayOpenImg = loadImage(
-    "assets/original_game_assets/images/frog_play_open.png"
+    "assets/hard_variation_assets/images/frog_play_open.png"
   );
 
-  //MOD: Preloads X Miss icon
-  missIconImg = loadImage("assets/original_game_assets/images/miss_x.png");
+  //MOD: Preloads Lives Miss icon
+  missIconImg = loadImage("assets/hard_variation_assets/images/miss_x.png");
+
+  // NEW MOD: Preloads fly sprite
+  flyImg = loadImage("assets/hard_variation_assets/images/fly.png");
+
+  // NEW MOD: Preloads bee sprite
+  beeImg = loadImage("assets/hard_variation_assets/images/bee.png");
 
   //MOD: Preloads music
   titleMusic = loadSound("assets/original_game_assets/sounds/title_screen.mp3");
@@ -221,15 +252,30 @@ function moveFly() {
   // Move the fly
   fly.x += fly.speed;
 
+  // NEW MOD: how hard the game should be
+  let difficulty = constrain(streak / winStreak, 0, 1);
+
   //MOD: Defining all the new modes of movement
   if (fly.mode === "straight") {
   }
   //Referencing mr angry assignement with movement for the fly
   else if (fly.mode === "sine") {
-    fly.angle += 0.08;
-    fly.y = fly.baseY + sin(fly.angle) * 30;
-  } else if (fly.mode === "jitter") {
-    fly.y += random(-2, 2);
+    // NEW MOD: increase amplitude slightly with difficulty
+    fly.angle += 0.08 + difficulty * 0.04; // angle speed also grows a bit
+    let baseAmplitude = 20;
+    let maxExtraAmp = 25; // so max 45 total
+    let amplitude = baseAmplitude + difficulty * maxExtraAmp;
+
+    fly.y = fly.baseY + sin(fly.angle) * amplitude;
+  } 
+
+  else if (fly.mode === "jitter") {
+    // NEW MOD: jitter range increases with difficulty
+    let baseJitter = 2;
+    let maxExtraJitter = 4; // so max 6
+    let jitterRange = baseJitter + difficulty * maxExtraJitter;
+
+    fly.y += random(-jitterRange, jitterRange);
   }
 
   // Handle the fly going off the canvas
@@ -260,37 +306,98 @@ function handleMiss() {
 }
 
 /**
- * Draws the fly as a black circle
+ * NEW MOD: handles a miss when the tongue returns without hitting anything
+ */
+function handleTongueMiss() {
+  // Losing a life because of a missed shot (not the same as missed fly)
+  misses += 1;
+  streak = 0; // break the streak
+
+  // play miss SFX
+  sfxMiss.play();
+
+  if (misses >= maxMiss) {
+    setGameState("lose");
+  }
+}
+
+
+/**
+ * NEW MOD: Draws the fly sprite (placeholder too)
  */
 function drawFly() {
   push();
+  imageMode(CENTER);
+
+if (fly.isBee && beeImg) {
+  // NEW MOD: draw bee
+  image(beeImg, fly.x, fly.y, fly.size * 2, fly.size * 2);
+} else if (!fly.isBee && flyImg) {
+  // NEW MOD: draw fly
+  image(flyImg, fly.x, fly.y, fly.size * 2, fly.size * 2);
+} else {
+  // placeholder
   noStroke();
   fill("#000000");
   ellipse(fly.x, fly.y, fly.size);
+}
+
   pop();
 }
 
+
 /**
- * Resets the fly to the left with a random y
+ * NEW MOD: Resets the fly to the left with a random y AND adds variety into size and speed when streak is up
  */
 function resetFly() {
-  //MOD: adding more room out of the canvas for flies to spawn to not have awkward spawns with new movements
+  // spawn off-screen on the left
   fly.x = -20;
 
-  //MOD: using fly.baseY as reference & same room added as before
+  // random vertical base position
   fly.baseY = random(30, 300);
   fly.y = fly.baseY;
 
-  //MOD: different speed for each fly
-  fly.speed = random(2, 4);
+  // NEW MOD: size based on streak
+  // 0–5 streak: shrink from big → original size
+  // 5–10 streak: shrink further to tiny
+  let currentStreak = constrain(streak, 0, winStreak);
 
-  //MOD: Angle reset for the sine movement
+  if (currentStreak <= 5) {
+    let t = currentStreak / 5; // 0 → 1
+    fly.size = baseFlySizeAt0 + t * (flySizeAt5 - baseFlySizeAt0);
+  } else {
+    let t = (currentStreak - 5) / 5; // 0 → 1 (for 5 → 10)
+    fly.size = flySizeAt5 + t * (minFlySizeAt10 - flySizeAt5);
+  }
+
+  // NEW MOD: speed based on streak
+  let ratio = currentStreak / winStreak; // 0 → 1
+  let minSpeed = baseMinSpeed + ratio * 0.5; // slight bump
+  let maxSpeed = baseMaxSpeed + ratio * extraMaxSpeed; // more bump
+  fly.speed = random(minSpeed, maxSpeed);
+
+  // reset angle
   fly.angle = 0;
 
-  //MOD: random picker for movement
-  const modes = ["straight", "sine", "jitter"];
-  fly.mode = random(modes);
+  // NEW MOD: movement type weighting based on streak
+  // low streak: easier
+  // high streak: harder
+  let r = random(1);
+
+  if (r < 0.4 - 0.3 * ratio) {
+    fly.mode = "straight";
+  } else if (r < 0.7) {
+    fly.mode = "sine";
+  } else {
+    fly.mode = "jitter";
+  }
+
+  // NEW MOD: decide if this is a bee or a fly
+  // low streak: fewer bees, high streak: more bees
+  let beeChance = 0.1 + ratio * 0.3; // from 10% to 40%
+  fly.isBee = random(1) < beeChance;
 }
+
 
 /**
  * Moves the frog to the mouse position on x
@@ -322,7 +429,13 @@ function moveTongue() {
     frog.tongue.y += frog.tongue.speed;
     // The tongue stops if it hits the bottom
     if (frog.tongue.y >= height) {
+      frog.tongue.y = height;
       frog.tongue.state = "idle";
+
+      // NEW MOD: if this shot never hit count it as a miss
+      if (!tongueHitThisShot) {
+        handleTongueMiss();
+      }
     }
   }
 }
@@ -365,29 +478,44 @@ function drawFrog() {
  * MOD: Adding scoring and win condition to this function
  */
 function checkTongueFlyOverlap() {
-  // Get distance from tongue to fly
+  // Get distance from tongue to bug
   const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
-  // Check if it's an overlap
   const eaten = d < frog.tongue.size / 2 + fly.size / 2;
+
   if (eaten) {
-    // MOD: Eat streak added
-    streak += 1;
+    // NEW MOD: shot connected with bug so don't count tongue miss
+    tongueHitThisShot = true;
 
-    // MOD: play catch sfx
-    sfxCatch.play();
+    if (fly.isBee) {
+      // NEW MOD: bee penalty
+      //  lose a life and streak
+      misses += 1;
+      streak = 0;
 
-    //MOD: Win condition to see if 10 were eating in a row
-    if (streak >= winStreak) {
-      setGameState("win");
+      sfxMiss.play();
+
+      if (misses >= maxMiss) {
+        setGameState("lose");
+      } else {
+        // new bug comes in
+        resetFly();
+        frog.tongue.state = "inbound";
+      }
+    } else {
+      // fly = point and streak
+      streak += 1;
+      sfxCatch.play();
+
+      if (streak >= winStreak) {
+        setGameState("win");
+      }
+
+      resetFly();
+      frog.tongue.state = "inbound";
     }
-
-    //MOD: keeping the resetFly function to bring back flies even when eating
-    // Reset the fly
-    resetFly();
-    // Bring back the tongue
-    frog.tongue.state = "inbound";
   }
 }
+
 
 /**
  * Launch the tongue on click (if it's not launched yet)
@@ -414,10 +542,11 @@ function mousePressed() {
       setGameState("play");
     }
   } else if (gameState === "play") {
-    // MOD: Orignial Tongue Control
+    // NEW MOD: Tongue shot starts and assumes it didnt hit yet
     if (frog.tongue.state === "idle") {
       frog.tongue.state = "outbound";
       sfxTongue.play();
+      tongueHitThisShot = false;
     }
   } else if (gameState === "win") {
     //MOD: Click on win to reset game
@@ -515,26 +644,24 @@ function drawHUD() {
   for (let i = 0; i < maxMiss; i++) {
     const x = startX + i * (iconSize + spacing);
 
-    if (i < misses) {
-      // missed flies show the X
-      image(
-        missIconImg,
-        x + iconSize / 2,
-        iconY + iconSize / 2,
-        iconSize,
-        iconSize
-      );
+    const livesLeft = maxMiss - misses;
+    const isLife = i < livesLeft;
+
+    if (isLife) {
+      // full / remaining life
+      tint(255);
     } else {
-      // potential misses show a dark version of the X icon
+      // lost life (dark)
       tint(80);
-      image(
-        missIconImg,
-        x + iconSize / 2,
-        iconY + iconSize / 2,
-        iconSize,
-        iconSize
-      );
     }
+
+    image(
+      missIconImg,
+      x + iconSize / 2,
+      iconY + iconSize / 2,
+      iconSize,
+      iconSize
+    );
   }
   pop();
 }
