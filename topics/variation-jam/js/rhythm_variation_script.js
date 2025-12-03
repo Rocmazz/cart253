@@ -1,5 +1,5 @@
 /**
- * Frog Game
+ * Rhythm Frog Game
  * Noureddine Mazzene
  *
  * A game of catching flies with your frog-tongue
@@ -11,16 +11,14 @@
  *
  *
  * Changes List:
- * -Start, Win screen & Game Over Screen (game states)
- * -Win condition: Eat 10 flies in a row
- * -Lose condition: Miss 3 flies
- * -UI For score in game
- * -Adding music
- * -Changing Frog & Background in game
- * -Adding opening splash screen
- * -Adding SFX
- * -New Movement for flies
- * -Adding two states for the frog sprite
+ * - Tied the gameplay to a fixed 119 BPM music track
+ * - Removed lose conditions: the game always runs until the end of the song
+ * - Replaced streak and lives with a pure score system based on how many flies you catch
+ * - Made flies fall from the top of the screen at a fixed speed
+ * - Spawned flies on a beat-based pattern so the game follows the rhythm of the track
+ * - Randomized the horizontal position of falling flies so you have to move the frog with the mouse
+ * - Increased tongue speed so it can keep up with the beat while still showing a visible animation
+ * - Added a results screen that shows your final score and a rank (S / A / B / C) at the end of the song
  *
  * Made with p5
  * https://p5js.org/
@@ -237,7 +235,7 @@ function draw() {
   else if (gameState === "win") {
     image(winImage, 0, 0);
 
-    // Simple results overlay (you'll replace visuals later with your own background & letter icon)
+    // Simple results overlay
     push();
     textAlign(CENTER, CENTER);
     fill(255);
@@ -253,7 +251,7 @@ function draw() {
     text("Accuracy: " + accuracy + "%", width / 2, 260);
 
     // NEW MOD: Rank based on accuracy
-    let rankImg = rankCImg; // default
+    let rankImg = rankCImg;
     if (accuracy >= 95) {
       rankImg = rankSImg;
     } else if (accuracy >= 85) {
