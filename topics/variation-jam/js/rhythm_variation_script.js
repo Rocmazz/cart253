@@ -42,8 +42,14 @@ let titleImage; // the title screen image
 let winImage; // the win screen
 let loseImage; // the lose screen
 
+// NEW MOD: defining letter rank icons
+let rankSImg;
+let rankAImg;
+let rankBImg;
+let rankCImg;
+
 //MOD: defining win/loss conditions and scoring
-let streak = 0; //total flies eaten in a row
+let streak = 0; //NEW MOD: Now its just the total eaten not a streak
 let misses = 0; // total flies missed
 const winStreak = 10; // eating 10 in a row = win
 const maxMiss = 3; // missing 3 = loss
@@ -55,6 +61,21 @@ let winMusic;
 let loseMusic;
 //MOD: tracks which song should be playing for the state
 let currentMusic = null;
+
+// NEW MOD: BPM & Intervals defining for fly spawn timings
+const SONG_BPM = 119;
+const BEAT_INTERVAL = (60 / SONG_BPM) * 1000; // ms per beat (~504ms)
+
+// NEW MOD: Song duration (in ms) for rhythm mode
+const SONG_DURATION_MS = 33000; // 33 seconds
+
+// NEW MOD: tracking song time & total notes
+let songStartTime = 0;
+let totalNotes = 0; // how many flies were spawned (total notes)
+
+
+let lastBeatTime = 0; // when the last fly was spawned
+
 
 // MOD: defining the sound effects
 let sfxClick;
@@ -72,6 +93,9 @@ let gameBgImg;
 //MOD: defining X icon for misses
 let missIconImg;
 
+// NEW MOD: defining sprite for fly
+let flyImg;
+
 // Our frog
 const frog = {
   // The frog's body has a position and size
@@ -85,25 +109,15 @@ const frog = {
     x: undefined,
     y: 480,
     size: 20,
-    speed: 20,
+    speed: 40,
     // Determines how the tongue moves each frame
     state: "idle", // State can be: idle, outbound, inbound
   },
 };
 
-// Our fly
-// Has a position, size, and speed of horizontal movement
-const fly = {
-  x: 0,
-  y: 200, // Will be random
-  size: 10,
-  speed: 3,
-
-  //MOD: defining modes for different movement
-  mode: "straight", // mode can be: straight, sine, jitter
-  baseY: 200,
-  angle: 0,
-};
+// Our flies
+// NEW MOD: array for multiple on screen at once
+let flies = [];
 
 // MOD: Preloading assests for the game
 function preload() {
@@ -117,18 +131,27 @@ function preload() {
 
   //MOD: Preloads Frog Sprites
   frogPlayClosedImg = loadImage(
-    "assets/original_game_assets/images/frog_play_closed.png"
+    "assets/rhythm_variation_assets/images/rfrog_play_closed.png"
   );
   frogPlayOpenImg = loadImage(
-    "assets/original_game_assets/images/frog_play_open.png"
+    "assets/rhythm_variation_assets/images/rfrog_play_open.png"
   );
+
+  // NEW MOD: Preloads rank icons
+  rankSImg = loadImage("assets/rhythm_variation_assets/images/rank_s.png");
+  rankAImg = loadImage("assets/rhythm_variation_assets/images/rank_a.png");
+  rankBImg = loadImage("assets/rhythm_variation_assets/images/rank_b.png");
+  rankCImg = loadImage("assets/rhythm_variation_assets/images/rank_c.png");
 
   //MOD: Preloads X Miss icon
   missIconImg = loadImage("assets/original_game_assets/images/miss_x.png");
 
+  // NEW MOD: Preloads fly sprite
+  flyImg = loadImage("assets/rhythm_variation_assets/images/fly.png");
+
   //MOD: Preloads music
   titleMusic = loadSound("assets/original_game_assets/sounds/title_screen.mp3");
-  playMusic = loadSound("assets/original_game_assets/sounds/play.mp3");
+  playMusic = loadSound("assets/rhythm_variation_assets/sounds/play.wav");
   winMusic = loadSound("assets/original_game_assets/sounds/win.mp3");
   loseMusic = loadSound("assets/original_game_assets/sounds/loss.mp3");
 
@@ -145,8 +168,11 @@ function preload() {
 function setup() {
   createCanvas(640, 480);
 
-  // Give the fly its first random position
-  resetFly();
+  // Start with no flies; rhythm system will spawn them
+  resetFlies();
+
+  // Start beat timer from now
+  lastBeatTime = millis();
 
   // MOD: Sets the game state to Title screen
   setGameState("credit");
@@ -179,6 +205,14 @@ function draw() {
   } else if (gameState === "play") {
     //MOD: Gameplay State
     image(gameBgImg, 0, 0);
+
+    // NEW MOD: spawn a new fly exactly on each beat
+    const now = millis();
+    if (now - lastBeatTime >= BEAT_INTERVAL) {
+      spawnFly();
+      lastBeatTime += BEAT_INTERVAL;
+    }
+
     moveFly();
     drawFly();
     moveFrog();
@@ -188,16 +222,58 @@ function draw() {
 
     //MOD: UI for scoring
     drawHUD();
+
+    // NEW MOD: song timer / progress
+    const elapsed = millis() - songStartTime;
+    drawSongProgress(elapsed);
+
+    // NEW MOD: check if song is over
+    if (elapsed >= SONG_DURATION_MS) {
+      setGameState("win");
+    }
   }
 
   //MOD: Win Screen State
   else if (gameState === "win") {
     image(winImage, 0, 0);
+
+    // Simple results overlay (you'll replace visuals later with your own background & letter icon)
     push();
     textAlign(CENTER, CENTER);
     fill(255);
-    textSize(32);
-    text("You ate " + streak + " flies in a row!", 425, 300);
+    textSize(20);
+    text("Hits: " + streak, width / 2, 190);
+    text("Total notes: " + totalNotes, width / 2, 225);
+
+    // Accuracy calculation
+    let accuracy = 0;
+    if (totalNotes > 0) {
+      accuracy = Math.round((streak / totalNotes) * 100);
+    }
+    text("Accuracy: " + accuracy + "%", width / 2, 260);
+
+    // NEW MOD: Rank based on accuracy
+    let rankImg = rankCImg; // default
+    if (accuracy >= 95) {
+      rankImg = rankSImg;
+    } else if (accuracy >= 85) {
+      rankImg = rankAImg;
+    } else if (accuracy >= 70) {
+      rankImg = rankBImg;
+    }
+
+    // Draw "Rank" label
+    textSize(18);
+    text("Rank", width / 2, 300);
+
+    // Draw icon under the label (if loaded)
+    if (rankImg) {
+      imageMode(CENTER);
+      image(rankImg, width / 2, 360, 80, 80);
+    }
+
+    textSize(14);
+    text("Click to return to title", width / 2, 410);
     pop();
   }
 
@@ -214,28 +290,21 @@ function draw() {
 }
 
 /**
- * Moves the fly according to its speed
- * Resets the fly if it gets all the way to the right
+ * NEW MOD: Moves the fly from top to bottom
+ * Resets the fly if it gets all the way to the bottom
  */
 function moveFly() {
-  // Move the fly
-  fly.x += fly.speed;
+  // NEW MOD: Move all flies down
+  for (let i = flies.length - 1; i >= 0; i--) {
+    const fly = flies[i];
 
-  //MOD: Defining all the new modes of movement
-  if (fly.mode === "straight") {
-  }
-  //Referencing mr angry assignement with movement for the fly
-  else if (fly.mode === "sine") {
-    fly.angle += 0.08;
-    fly.y = fly.baseY + sin(fly.angle) * 30;
-  } else if (fly.mode === "jitter") {
-    fly.y += random(-2, 2);
-  }
+    fly.y += fly.speed;
 
-  // Handle the fly going off the canvas
-  if (fly.x > width) {
-    // MOD: Change to handleMiss to calculate lose condition
-    handleMiss();
+    // bottom counts as a miss then remove that fly
+    if (fly.y > height + fly.size) {
+      handleMiss();
+      flies.splice(i, 1);
+    }
   }
 }
 
@@ -245,52 +314,53 @@ function moveFly() {
  */
 function handleMiss() {
   misses += 1;
-  streak = 0; // breaks the streak when there's a miss
 
-  //MOD: play miss sfx
+  // MOD: play miss sfx
   sfxMiss.play();
 
-  //loss condition
-  if (misses >= maxMiss) {
-    setGameState("lose");
-  }
-
-  // call back to resetFly to bring new ones again
-  resetFly();
+  // NEW MOD: no more game over
 }
 
 /**
- * Draws the fly as a black circle
- */
+ * NEW MOD: Draws the fly using the sprite
+*/
 function drawFly() {
   push();
-  noStroke();
-  fill("#000000");
-  ellipse(fly.x, fly.y, fly.size);
+  imageMode(CENTER);
+  // NEW MOD: draw the sprite scaled based on fly.size
+  for (const fly of flies) {
+    if (flyImg) {
+      image(flyImg, fly.x, fly.y, fly.size * 2, fly.size * 2);
+    } else {
+      // placeholder
+      noStroke();
+      fill("#000000");
+      ellipse(fly.x, fly.y, fly.size);
+    }
+  }
+
   pop();
 }
 
-/**
- * Resets the fly to the left with a random y
- */
-function resetFly() {
-  //MOD: adding more room out of the canvas for flies to spawn to not have awkward spawns with new movements
-  fly.x = -20;
+// NEW MOD: Spawns new fly at the top at a random x
+function spawnFly() {
+  const fly = {
+    x: random(40, width - 40),
+    y: -20,
+    size: 24,
+    speed: random(3, 5),
+  };
+  flies.push(fly);
 
-  //MOD: using fly.baseY as reference & same room added as before
-  fly.baseY = random(30, 300);
-  fly.y = fly.baseY;
-
-  //MOD: different speed for each fly
-  fly.speed = random(2, 4);
-
-  //MOD: Angle reset for the sine movement
-  fly.angle = 0;
-
-  //MOD: random picker for movement
-  const modes = ["straight", "sine", "jitter"];
-  fly.mode = random(modes);
+  // NEW MOD: adds note to bpm score
+  totalNotes += 1;
 }
+
+// NEW MOD: Clears all flies when restarting the game
+function resetFlies() {
+  flies = [];
+}
+
 
 /**
  * Moves the frog to the mouse position on x
@@ -313,7 +383,7 @@ function moveTongue() {
   else if (frog.tongue.state === "outbound") {
     frog.tongue.y += -frog.tongue.speed;
     // The tongue bounces back if it hits the top
-    if (frog.tongue.y <= 0) {
+    if (frog.tongue.y <= height / 5) {
       frog.tongue.state = "inbound";
     }
   }
@@ -334,14 +404,14 @@ function drawFrog() {
   // TONGUE DRAW
   // Draw the tongue tip
   push();
-  fill("#ff807d");
+  fill("#4b84eb");
   noStroke();
   ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
   pop();
 
   // Draw the rest of the tongue
   push();
-  stroke("#ff807d");
+  stroke("#4b84eb");
   strokeWeight(frog.tongue.size);
   line(frog.tongue.x, frog.tongue.y, frog.body.x, frog.body.y);
   pop();
@@ -366,26 +436,26 @@ function drawFrog() {
  */
 function checkTongueFlyOverlap() {
   // Get distance from tongue to fly
-  const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
-  // Check if it's an overlap
-  const eaten = d < frog.tongue.size / 2 + fly.size / 2;
-  if (eaten) {
+  for (let i = flies.length - 1; i >= 0; i--) {
+     // Check if it's an overlap
+    const fly = flies[i];
+
+    const d = dist(frog.tongue.x, frog.tongue.y, fly.x, fly.y);
+    const eaten = d < frog.tongue.size / 2 + fly.size / 2;
     // MOD: Eat streak added
-    streak += 1;
+    if (eaten) {
+ streak += 1; // now as the total 
+      sfxCatch.play();
 
-    // MOD: play catch sfx
-    sfxCatch.play();
+      // remove fly
+      flies.splice(i, 1);
 
-    //MOD: Win condition to see if 10 were eating in a row
-    if (streak >= winStreak) {
-      setGameState("win");
+      // Pull tongue back
+      frog.tongue.state = "inbound";
+
+      // NEW MOD: no more win condition
+      break;
     }
-
-    //MOD: keeping the resetFly function to bring back flies even when eating
-    // Reset the fly
-    resetFly();
-    // Bring back the tongue
-    frog.tongue.state = "inbound";
   }
 }
 
@@ -440,7 +510,7 @@ function resetGame() {
   frog.tongue.y = 480;
 
   //Resets the flies
-  resetFly();
+  resetFlies();
 }
 
 //MOD: Function to check game state
@@ -467,7 +537,15 @@ function setGameState(newState) {
   else if (gameState === "title") {
     currentMusic = titleMusic;
   } else if (gameState === "play") {
-    currentMusic = playMusic;
+    //when game starts restart flies & timing
+  currentMusic = playMusic;
+  resetFlies();
+  lastBeatTime = millis();
+  songStartTime = millis();
+    // NEW MOD: reset stats for a clean run
+    streak = 0;
+    misses = 0;
+    totalNotes = 0;
   } else if (gameState === "win") {
     currentMusic = winMusic;
   } else if (gameState === "lose") {
@@ -480,64 +558,49 @@ function setGameState(newState) {
   }
 }
 
-//MOD: Adding a function for the hud to better display score instead of just displaying numbers
+//NEW MOD: replacing bar hud with score and misses 
 function drawHUD() {
-  // MOD: win streak bar or just hunger bar
-  const barX = 20;
-  const barY = 20;
-  const barWidth = 200;
-  const barHeight = 16;
-
-  // bar goes 0 to 10
-  const ratio = constrain(streak / winStreak, 0, 1);
-
-  // background box for bar
   push();
-  noStroke();
-  fill(0, 0, 0, 60);
-  rect(barX - 2, barY - 2, barWidth + 4, barHeight + 4, 6);
+  textAlign(LEFT, TOP);
+  textSize(16);
+  fill(255);
 
-  // green bar as you build streak
-  fill("#94c400");
-  rect(barX, barY, barWidth * ratio, barHeight, 4);
-  pop();
+  // hits (streak is now total hits)
+  text("Hits: " + streak, 20, 15);
 
-  // MOD: Miss icon definition (X Icon)
-  const iconSize = 32;
-  const spacing = 8;
-  const totalWidth = maxMiss * iconSize + (maxMiss - 1) * spacing;
-  const startX = width - totalWidth - 20;
-  const iconY = 15;
+  // misses
+  text("Misses: " + misses, 20, 35);
 
-  // MOD: make the X icon show up as you miss and placeholders before missing
-  push();
-  imageMode(CENTER);
-  for (let i = 0; i < maxMiss; i++) {
-    const x = startX + i * (iconSize + spacing);
-
-    if (i < misses) {
-      // missed flies show the X
-      image(
-        missIconImg,
-        x + iconSize / 2,
-        iconY + iconSize / 2,
-        iconSize,
-        iconSize
-      );
-    } else {
-      // potential misses show a dark version of the X icon
-      tint(80);
-      image(
-        missIconImg,
-        x + iconSize / 2,
-        iconY + iconSize / 2,
-        iconSize,
-        iconSize
-      );
-    }
-  }
   pop();
 }
+
+// NEW MOD: draws a progress bar for the song duration
+function drawSongProgress(elapsed) {
+  // how far into the song we are (0.0 to 1.0)
+  let ratio = 0;
+  if (SONG_DURATION_MS > 0) {
+    ratio = constrain(elapsed / SONG_DURATION_MS, 0, 1);
+  }
+
+  const barX = 20;
+  const barY = height - 30;
+  const barWidth = width - 40;
+  const barHeight = 12;
+
+  push();
+  noStroke();
+
+  // background bar
+  fill(0, 0, 0, 80);
+  rect(barX, barY, barWidth, barHeight, 6);
+
+  // filled part
+  fill("#4b84eb");
+  rect(barX, barY, barWidth * ratio, barHeight, 6);
+
+  pop();
+}
+
 
 // NEW MOD: draws the "Back to Menu" button on the title screen
 function drawBackToMenuButton() {

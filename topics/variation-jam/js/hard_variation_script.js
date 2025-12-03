@@ -7,20 +7,26 @@
  * Instructions:
  * - Move the frog with your mouse
  * - Click to launch the tongue
- * - Catch flies (Not Bees!!!)
+ * - Catch 10 flies in a row (Not Bees!!!)
+ * - Dont Miss Your Shot!
  *
  *
  * Changes List:
- * -Start, Win screen & Game Over Screen (game states)
- * -Win condition: Eat 10 flies in a row
- * -Lose condition: not winning...
- * -UI For score in game
- * -Adding music
- * -Changing Frog & Background in game
- * -Adding opening splash screen
- * -Adding SFX
- * -New Movement for flies
- * -Adding two states for the frog sprite
+* - Added a "Back to Menu" button on the title screen to return to index.html
+ * - Changed the X icons into a lives system that starts full and empties as you lose
+ * - Added tongue miss detection using tongueHitThisShot so empty shots cost a life
+ * - Kept the original win condition of eating 10 bugs in a row but made it much harder to keep a streak
+ * - Replaced the simple circle fly with a sprite
+ * - Made fly size depend on streak:
+ *      big and easy to hit at low streak
+ *      original size around streak 5
+ *      smaller at higher streak
+ * - Made fly speed depend on streak so they move faster as your streak goes up
+ * - Adjusted fly movement so higher streaks mean more sine and jitter motion and fewer straight paths
+ * - Added a bee variant (isBee) that uses a separate sprite
+ * - Made bees more likely to spawn as your streak increases
+ * - Eating a fly increases the streak as usual
+ * - Eating a bee makes you lose a life and reset your streak but still cancels a tongue miss
  *
  * Made with p5
  * https://p5js.org/
