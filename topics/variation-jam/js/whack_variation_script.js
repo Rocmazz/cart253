@@ -98,11 +98,11 @@ const frog = {
 const fly = {
   x: 0,
   y: 0,
-  size: 32,
+  size: 50,
 };
 
 // Whack-a-mole holes at the top 
-const HOLE_Y = 10; 
+const HOLE_Y = 50; 
 const HOLE_POSITIONS = [120, 320, 520]; 
 
 // defining timing for how long the mole stays visible
@@ -114,19 +114,21 @@ let flyVisibleDuration = 1500; // will be randomized
 // MOD: Preloading assests for the game
 function preload() {
   // MOD: Preloads the screen images
-  titleImage = loadImage("assets/original_game_assets/images/title-screen.png");
-  winImage = loadImage("assets/original_game_assets/images/winscreen.png");
-  loseImage = loadImage("assets/original_game_assets/images/losescreen.png");
+  titleImage = loadImage(
+    "assets/whack_variation_assets/images/title-screen.png"
+  );
+  winImage = loadImage("assets/whack_variation_assets/images/winscreen.png");
+  loseImage = loadImage("assets/whack_variation_assets/images/losescreen.png");
   gameBgImg = loadImage(
-    "assets/original_game_assets/images/background-ingame.png"
+    "assets/whack_variation_assets/images/background-ingame.png"
   );
 
   //MOD: Preloads Frog Sprites
   frogPlayClosedImg = loadImage(
-    "assets/original_game_assets/images/frog_play_closed.png"
+    "assets/whack_variation_assets/images/wfrog_play_closed.png"
   );
   frogPlayOpenImg = loadImage(
-    "assets/original_game_assets/images/frog_play_open.png"
+    "assets/whack_variation_assets/images/wfrog_play_open.png"
   );
 
   //MOD: Preloads X Miss icon
@@ -171,7 +173,7 @@ function draw() {
     textAlign(CENTER, CENTER);
     fill(255);
     textSize(26);
-    text("CART 253aa – Mod Jam", width / 2, height / 2 - 40);
+    text("CART 253aa – Variation Jam", width / 2, height / 2 - 40);
 
     textSize(18);
     text("Noureddine Mazzene", width / 2, height / 2);
@@ -346,14 +348,14 @@ function drawFrog() {
   // TONGUE DRAW
   // Draw the tongue tip
   push();
-  fill("#ff807d");
+  fill("#87ff7d");
   noStroke();
   ellipse(frog.tongue.x, frog.tongue.y, frog.tongue.size);
   pop();
 
   // Draw the rest of the tongue
   push();
-  stroke("#ff807d");
+  stroke("#87ff7d");
   strokeWeight(frog.tongue.size);
   line(frog.tongue.x, frog.tongue.y, frog.body.x, frog.body.y);
   pop();

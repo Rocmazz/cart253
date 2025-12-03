@@ -139,11 +139,13 @@ const extraMaxSpeed = 2;    // extra speed added by streak
 // MOD: Preloading assests for the game
 function preload() {
   // MOD: Preloads the screen images
-  titleImage = loadImage("assets/original_game_assets/images/title-screen.png");
+  titleImage = loadImage(
+    "assets/hard_variation_assets/images/title-screen.png"
+  );
   winImage = loadImage("assets/original_game_assets/images/winscreen.png");
   loseImage = loadImage("assets/original_game_assets/images/losescreen.png");
   gameBgImg = loadImage(
-    "assets/original_game_assets/images/background-ingame.png"
+    "assets/hard_variation_assets/images/background-ingame.png"
   );
 
   //MOD: Preloads Frog Sprites
@@ -199,7 +201,7 @@ function draw() {
     textAlign(CENTER, CENTER);
     fill(255);
     textSize(26);
-    text("CART 253aa – Mod Jam", width / 2, height / 2 - 40);
+    text("CART 253aa – Variation Jam", width / 2, height / 2 - 40);
 
     textSize(18);
     text("Noureddine Mazzene", width / 2, height / 2);
