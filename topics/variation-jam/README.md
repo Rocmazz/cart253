@@ -5,7 +5,7 @@ Noureddine Mazzene
 [View this project online](https://rocmazz.github.io/cart253/topics/variation-jam/)
 
 ## Description
-
+3 Variations to the Frog game featuring changes like Hardcore mode, Rhythm mode and Whack-a-mole mode!
 
 ## Screenshot(s)
 
@@ -42,7 +42,7 @@ Noureddine Mazzene
 - Increased tongue speed so it can keep up with the beat while still showing a visible animation
 - Added a results screen that shows your final score and a rank (S / A / B / C) at the end of the song
 
-> - Whack a Mole Frog
+> - Whack-a-Mole Frog
 
 - Changing Frog & Background in game
 - Replacing flies with Whack-A-Mole style targets
