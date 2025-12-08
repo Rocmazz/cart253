@@ -12,15 +12,22 @@
  *
  * Changes List:
  * -Start, Win screen & Game Over Screen (game states)
- * -Win condition: Eat 10 flies in a row
- * -Lose condition: Miss 3 flies
+ * -Win condition: Eat 10 targets in a row
+ * -Lose condition: Miss 3 targets
  * -UI For score in game
  * -Adding music
- * -Changing Frog & Background in game
- * -Adding opening splash screen
  * -Adding SFX
- * -New Movement for flies
- * -Adding two states for the frog sprite
+ * -Changing Frog & Background in game
+ * -Replacing flies with Whack-A-Mole style targets
+ * -Moles pop up from fixed holes instead of moving across screen
+ * -Moles stay visible for a timed duration before hiding again
+ * -Randomized mole durations for varied difficulty
+ * -Missing a mole (timeout) now counts as a miss
+ * -Removing previous left-to-right fly movement system
+ * -Removing sine/jitter movement modes
+ * -Keeping frog tongue mechanics from original
+ * -Adding reset system for mole spawning
+ * -Shoot-and-miss penalty
  *
  * Made with p5
  * https://p5js.org/

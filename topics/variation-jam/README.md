@@ -1,35 +1,68 @@
-# TITLE OF PROJECT
+# Variation Jam (Frog Games)
 
-AUTHOR NAME
+Noureddine Mazzene
 
-[View this project online](URL_FOR_THE_RUNNING_PROJECT)
+[View this project online](https://rocmazz.github.io/cart253/topics/variation-jam/)
 
 ## Description
 
-This description should help the reader understand what the program is, anything they should know to be able to experience it (controls, special features, etc.), and what the desired user experience is. For example:
-
-> *The Mayor of Clown Town* is a simulator experience that allows the user to control a small town populated entirely by clowns.
-
-> The experience is controlled via the mouse, with left click selecting a clown and bringing up a menu of options such as "slip of banana peel" or "get into impossible capacious clown-car."
-
-> The project is meant to give the user a sense of what it would be the mayor of a town of clowns, eventually getting the sense that clowns are not taking their civic duties seriously.
 
 ## Screenshot(s)
 
-This bit should have some images of the program running so that the reader has a sense of what it looks like. For example:
 
-> ![Image of a clown face](./assets/images/clown.png)
+![Image of the assignement](assets/images/Screenshot_1.png)
+![Image_of the assignement](assets/images/Screenshot_2.png)
+![Image_of the assignement](assets/images/Screenshot_3.png)
+![Image_of the assignement](assets/images/Screenshot_4.png)
+![Image_of the assignement](assets/images/Screenshot_5.png)
+![Image_of the assignement](assets/images/Screenshot_6.png)
+![Image_of the assignement](assets/images/Screenshot_7.png)
+## Changes List
+> - Hardcore Frog
+- Start, Win screen & Game Over Screen (game states)
+- Win condition: Eat 10 flies in a row
+- Lose condition: Miss 3 flies
+- UI For score in game
+- Adding music
+- Changing Frog & Background in game
+- Adding opening splash screen
+- Adding SFX
+- New Movement for flies
+- Adding two states for the frog sprite 
+
+> - Rhythm Frog 
+- Tied the gameplay to a fixed 119 BPM music track
+- Removed lose conditions: the game always runs until the end of the song
+- Replaced streak and lives with a pure score system based on how many flies you catch
+- Made flies fall from the top of the screen at a fixed speed
+- Spawned flies on a beat-based pattern so the game follows the rhythm of the track
+- Randomized the horizontal position of falling flies so you have to move the frog with the mouse
+- Increased tongue speed so it can keep up with the beat while still showing a visible animation
+- Added a results screen that shows your final score and a rank (S / A / B / C) at the end of the song
+
+> - Whack a Mole Frog 
+-Changing Frog & Background in game
+-Replacing flies with Whack-A-Mole style targets
+-Moles pop up from fixed holes instead of moving across screen
+-Moles stay visible for a timed duration before hiding again
+-Randomized mole durations for varied difficulty
+-Missing a mole (timeout) now counts as a miss
+-Removing previous left-to-right fly movement system
+-Removing sine/jitter movement modes
+-Keeping frog tongue mechanics from original
+-Adding reset system for mole spawning
+-Shoot-and-miss penalty
+
+
+
 
 ## Attribution
 
-This bit should attribute any code, assets or other elements used taken from other sources. For example:
-
 > - This project uses [p5.js](https://p5js.org).
-> - The clown image is a capture of the clown from the Apple emoji character set.
-> - The barking sound effect is "single dog bark 1" by crazymonke9 from freesound.org: https://freesound.org/people/crazymonke9/sounds/418107/
+> - This project uses [SFX from Envato Elements](https://elements.envato.com/).
+> - This project uses [Music from Lud and Schlatts Musical Emporium](https://www.youtube.com/@ludandschlattsmusicalempor6746).
 
 ## License
 
-This bit should include the license you want to apply to your work. For example:
 
 > This project is licensed under a Creative Commons Attribution ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en)) license with the exception of libraries and other components with their own licenses.
