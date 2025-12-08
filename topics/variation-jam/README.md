@@ -19,6 +19,7 @@ Noureddine Mazzene
 
 ## Changes List
 > - Hardcore Frog
+
 - Start, Win screen & Game Over Screen (game states)
 - Win condition: Eat 10 flies in a row
 - Lose condition: Miss 3 flies
@@ -30,7 +31,8 @@ Noureddine Mazzene
 - New Movement for flies
 - Adding two states for the frog sprite 
 
-> - Rhythm Frog 
+> - Rhythm Frog
+
 - Tied the gameplay to a fixed 119 BPM music track
 - Removed lose conditions: the game always runs until the end of the song
 - Replaced streak and lives with a pure score system based on how many flies you catch
@@ -40,18 +42,19 @@ Noureddine Mazzene
 - Increased tongue speed so it can keep up with the beat while still showing a visible animation
 - Added a results screen that shows your final score and a rank (S / A / B / C) at the end of the song
 
-> - Whack a Mole Frog 
--Changing Frog & Background in game
--Replacing flies with Whack-A-Mole style targets
--Moles pop up from fixed holes instead of moving across screen
--Moles stay visible for a timed duration before hiding again
--Randomized mole durations for varied difficulty
--Missing a mole (timeout) now counts as a miss
--Removing previous left-to-right fly movement system
--Removing sine/jitter movement modes
--Keeping frog tongue mechanics from original
--Adding reset system for mole spawning
--Shoot-and-miss penalty
+> - Whack a Mole Frog
+
+- Changing Frog & Background in game
+- Replacing flies with Whack-A-Mole style targets
+- Moles pop up from fixed holes instead of moving across screen
+- Moles stay visible for a timed duration before hiding again
+- Randomized mole durations for varied difficulty
+- Missing a mole (timeout) now counts as a miss
+- Removing previous left-to-right fly movement system
+- Removing sine/jitter movement modes
+- Keeping frog tongue mechanics from original
+- Adding reset system for mole spawning
+- Shoot-and-miss penalty
 
 
 
