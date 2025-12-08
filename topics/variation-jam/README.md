@@ -9,14 +9,14 @@ Noureddine Mazzene
 
 ## Screenshot(s)
 
+![Image of the assignement](assets/images/Screenshot1.png)
+![Image_of the assignement](assets/images/Screenshot2.png)
+![Image_of the assignement](assets/images/Screenshot3.png)
+![Image_of the assignement](assets/images/Screenshot4.png)
+![Image_of the assignement](assets/images/Screenshot5.png)
+![Image_of the assignement](assets/images/Screenshot6.png)
+![Image_of the assignement](assets/images/Screenshot7.png)
 
-![Image of the assignement](assets/images/Screenshot_1.png)
-![Image_of the assignement](assets/images/Screenshot_2.png)
-![Image_of the assignement](assets/images/Screenshot_3.png)
-![Image_of the assignement](assets/images/Screenshot_4.png)
-![Image_of the assignement](assets/images/Screenshot_5.png)
-![Image_of the assignement](assets/images/Screenshot_6.png)
-![Image_of the assignement](assets/images/Screenshot_7.png)
 ## Changes List
 > - Hardcore Frog
 - Start, Win screen & Game Over Screen (game states)
